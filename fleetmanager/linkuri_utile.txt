@@ -1,0 +1,10 @@
+https://learndjango.com/tutorials/django-login-and-logout-tutorial
+
+https://www.codegrepper.com/code-examples/python/how+to+check+if+user+instance+is+admin+django+permissions
+
+https://stackoverflow.com/questions/12615154/how-to-get-the-currently-logged-in-users-user-id-in-django
+
+https://forum.djangoproject.com/t/how-to-use-user-as-foreign-key/5736
+
+https://www.youtube.com/watch?v=F5mRW0jo-U4&t=9447s
+

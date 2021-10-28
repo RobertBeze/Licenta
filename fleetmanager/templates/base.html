@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+</head>
+<body style="background-color: skyblue;">
+{% if user.is_authenticated %}
+  {% if user.is_superuser %}
+    {% include 'navbar.html' %}
+  {% else %}
+    {% include 'navbar2.html' %}
+  {% endif %}
+    {% block content %}
+    {% endblock %}
+  {% else %}
+    <div style="
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border: 5px solid lightblue;
+      padding: 10px;
+      background-color: lightblue;
+      text-align: center;
+    ">
+    <p>Nu ești logat</p>
+    <a href="{% url 'login' %}">Log In</a>
+    </div>
+  {% endif %}
+</body>
+</html>
+
+
