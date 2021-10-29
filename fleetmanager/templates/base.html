@@ -5,31 +5,28 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 {% if user.is_authenticated %}
-  {% if user.is_superuser %}
     {% include 'navbar.html' %}
-  {% else %}
-    {% include 'navbar2.html' %}
-  {% endif %}
     {% block content %}
     {% endblock %}
-  {% else %}
-    <div style="
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border: 5px solid lightblue;
-      padding: 10px;
-      background-color: lightblue;
-      text-align: center;
+{% else %}
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid lightblue;
+    padding: 10px;
+    background-color: lightblue;
+    text-align: center;
     ">
-    <p>Nu ești logat</p>
-    <a href="{% url 'login' %}">Log In</a>
+      <p>Nu ești logat</p>
+      <a href="{% url 'login' %}">Log In</a>
     </div>
-  {% endif %}
+{% endif %}
 </body>
 </html>
 
