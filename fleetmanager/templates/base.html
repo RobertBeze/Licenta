@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Home</title>
+<title>
+  {% if not user.is_authenticated %}
+    Log In
+  {% else %}
+    {% block title%}{% endblock %}
+  {% endif %}
+</title>
 {% load static %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
@@ -9,9 +15,16 @@
 </head>
 <body>
 {% if user.is_authenticated %}
+  {% if user.is_superuser %}
+    {% include 'navbar_admin.html' %}
+
+  {% else %}
     {% include 'navbar.html' %}
+  {% endif %}
+  <div class="main">
     {% block content %}
     {% endblock %}
+  </div>
 {% else %}
   <div style="
     position: absolute;
