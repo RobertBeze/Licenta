@@ -22,8 +22,8 @@ class Vehicle(models.Model):
 	vehicle_itp = models.DateField(verbose_name = "ITP expiră la")
 	vehicle_rca = models.DateField(verbose_name = "RCA expiră la")
 	vehicle_last_service = models.PositiveIntegerField(verbose_name = "Ultimul service efectuat KM")
-	vehicle_driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null = True, verbose_name = "Șoferul")
-	vehicle_category = models.ForeignKey(Category, on_delete=models.SET_NULL, null = True, verbose_name = "Categoria")
+	vehicle_driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null = True, verbose_name = "Șoferul", blank = True)
+	vehicle_category = models.ForeignKey(Category, on_delete=models.SET_NULL, null = True, verbose_name = "Categoria", blank = True)
 
 	def __str__(self):
 		string = "Număr: "+self.vehicle_plate+" | Categorie: "+self.vehicle_category.get_name()

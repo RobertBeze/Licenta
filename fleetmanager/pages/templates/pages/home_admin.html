@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Home-Admin{% endblock %}
+
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Bună ziua, {{ user.username }}</h1>
+	<a href="vehicles/create_category" class='btn'>Adaugă o categorie</a>
+	<a href="vehicles/create_vehicle" class='btn'>Adaugă un vehicul</a>
+{% endblock %}
