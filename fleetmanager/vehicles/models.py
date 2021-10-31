@@ -27,7 +27,11 @@ class Vehicle(models.Model):
 	vehicle_category = models.ForeignKey(Category, on_delete=models.SET_NULL, null = True, verbose_name = "Categoria", blank = True)
 
 	def __str__(self):
-		string = "Număr: "+self.vehicle_plate+" | Categorie: "+self.vehicle_category.get_name()
+		if self.vehicle_category is None:
+			string = "Număr: "+self.vehicle_plate+" | Categorie: None"
+		else:
+			string = "Număr: "+self.vehicle_plate+" | Categorie: "+self.vehicle_category.get_name()
+
 		return string
 
 	def get_absolute_url(self):

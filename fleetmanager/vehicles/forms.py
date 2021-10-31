@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404
 class VehicleForm(forms.ModelForm):
 	vehicle_plate = forms.CharField(label='Numărul înmatriculare')
 	vehicle_odometer = forms.IntegerField(label='Kilometraj')
-	vehicle_itp = forms.DateField(label='ITP expiră la', help_text='LL/DD/AAAA')
-	vehicle_rca = forms.DateField(label='RCA expiră la',help_text='LL/DD/AAAA')
+	vehicle_itp = forms.DateField(label='ITP expiră la', help_text='AAAA-LL-ZZ')
+	vehicle_rca = forms.DateField(label='RCA expiră la',help_text='AAAA-LL-ZZ')
 	vehicle_last_service = forms.IntegerField(label='KM ultima revizie')
 	vehicle_driver = forms.CharField(label='Șofer', required=False)
 	vehicle_category = forms.CharField(label='Categoria', required=False)
@@ -87,7 +87,8 @@ class VehicleForm(forms.ModelForm):
 		k = 0
 
 		if not vehicle_driver:
-			return User.objects.get(username='NONE')
+			#return User.objects.get(username='NONE')
+			return None
 
 		for user in user_list:
 			if vehicle_driver.lower() == user.get_username().lower():
@@ -109,7 +110,8 @@ class VehicleForm(forms.ModelForm):
 		k=0
 
 		if not vehicle_category:
-			return Category.objects.get(category_name='NONE')
+			#return Category.objects.get(category_name='NONE')
+			return None
 
 		for cat in category_list:
 			if cat.category_name.lower() == vehicle_category.lower():
