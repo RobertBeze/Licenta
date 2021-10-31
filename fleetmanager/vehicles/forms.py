@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404
 class VehicleForm(forms.ModelForm):
 	vehicle_plate = forms.CharField(label='Numărul înmatriculare')
 	vehicle_odometer = forms.IntegerField(label='Kilometraj')
-	vehicle_itp = forms.DateField(label='ITP expiră la')
-	vehicle_rca = forms.DateField(label='RCA expiră la')
+	vehicle_itp = forms.DateField(label='ITP expiră la', help_text='LL/DD/AAAA')
+	vehicle_rca = forms.DateField(label='RCA expiră la',help_text='LL/DD/AAAA')
 	vehicle_last_service = forms.IntegerField(label='KM ultima revizie')
 	vehicle_driver = forms.CharField(label='Șofer', required=False)
 	vehicle_category = forms.CharField(label='Categoria', required=False)

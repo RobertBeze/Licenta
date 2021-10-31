@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 
 
@@ -28,4 +29,7 @@ class Vehicle(models.Model):
 	def __str__(self):
 		string = "Număr: "+self.vehicle_plate+" | Categorie: "+self.vehicle_category.get_name()
 		return string
+
+	def get_absolute_url(self):
+		return reverse("vehicle-detail-view", kwargs={"id":self.id})
 

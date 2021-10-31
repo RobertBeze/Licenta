@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Listă Vehicule{% endblock %}
+
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Listă Vehicule</h1>
+	<div style="position: absolute; left: 42%">
+	<table style="widht: 30%">
+		<tr>
+			<th>Număr Înmatriculare</th>
+			<th>Șofer</th>
+			<th>Categorie</th>
+		</tr>
+		<tr>{% for vehicle in vehicle_list %}
+			<td><a href="{{ vehicle.get_absolute_url }}">{{ vehicle.vehicle_plate }}</a></td>
+			<td>{{ vehicle.vehicle_driver }}</td>
+			<td>{{ vehicle.vehicle_category }}</td>
+		</tr>{% endfor %}
+	</table>
+	</div>
+
+{% endblock %}
