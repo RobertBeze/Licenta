@@ -34,5 +34,7 @@
 		</tr>
 	</table>
 	</div>
+	{% if user.is_superuser %}
 	<a href="{{ vehicle.get_absolute_url }}delete" class='btn'>Șterge Vehicul</a>
+	{% endif %}
 {% endblock %}

@@ -23,6 +23,10 @@ class VehicleDeleteView(View):
 		vehicle = self.get_vehicle()
 		if vehicle is not None:
 			context['vehicle'] = vehicle
+
+		if not request.user.is_superuser:
+			return redirect('home')
+
 		return render(request, self.template_name, context)
 
 	def post(self, request, id, *args, **kwargs):
@@ -32,6 +36,10 @@ class VehicleDeleteView(View):
 			vehicle.delete()
 			context['vehicle'] = None
 			return redirect('vehicle-list')
+
+		if not request.user.is_superuser:
+			return redirect('home')
+
 		return render(request, self.template_name, context)
 
 
@@ -53,6 +61,9 @@ class VehicleCreateView(View):
 		'category_list': self.get_lista_categorii(),
 		'user_list': self.get_lista_useri()
 		}
+
+		if not request.user.is_superuser:
+			return redirect('home')
 		return render(request, self.template_name, context)
 
 	def post(self, request, *args, **kwargs):
@@ -64,6 +75,9 @@ class VehicleCreateView(View):
 		}
 		if form.is_valid():
 			form.save()
+			return redirect('home')
+
+		if not request.user.is_superuser:
 			return redirect('home')
 		return render(request, self.template_name, context)
 
@@ -92,6 +106,10 @@ class VehicleListView(View):
 
 def create_category(request):
 	form = CategoryForm(request.POST or None)
+
+	if not request.user.is_superuser:
+			return redirect('home')
+
 	if form.is_valid():
 		form.save();
 		form = CategoryForm()
