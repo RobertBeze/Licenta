@@ -18,7 +18,9 @@
 		</ul>
 	</div>
 	<form method = "POST"> {% csrf_token %}
-		{{ form.as_p }}
+		<table style="border: 10px;">
+		{{ form.as_table }}
+		</table>
 		<input type="submit" value="Salvează">
 	</form>
 {% endblock %}

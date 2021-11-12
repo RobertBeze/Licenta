@@ -13,7 +13,7 @@
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">{{ vehicle.vehicle_plate }}</h1>
 	<div style="position: absolute; left: 32%">
-	<table style="widht: 30%">
+	<table class="vehlist"style="widht: 30%">
 		<tr>
 			<th>Număr Înmatriculare</th>
 			<th>Șofer</th>
@@ -35,6 +35,6 @@
 	</table>
 	</div>
 	{% if user.is_superuser %}
-	<a href="{{ vehicle.get_absolute_url }}delete" class='btn'>Șterge Vehicul</a>
+	<a class='btn btn-secondary' href="{{ vehicle.get_absolute_url }}delete">Șterge Vehicul</a>
 	{% endif %}
 {% endblock %}

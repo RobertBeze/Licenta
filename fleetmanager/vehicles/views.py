@@ -32,13 +32,14 @@ class VehicleDeleteView(View):
 	def post(self, request, id, *args, **kwargs):
 		context = {}
 		vehicle = self.get_vehicle()
+
+		if not request.user.is_superuser:
+			return redirect('home')
+
 		if vehicle is not None:
 			vehicle.delete()
 			context['vehicle'] = None
 			return redirect('vehicle-list')
-
-		if not request.user.is_superuser:
-			return redirect('home')
 
 		return render(request, self.template_name, context)
 
