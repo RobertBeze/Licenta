@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block title %}{{ vehicle.vehicle_plate }}{% endblock %}
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Modifică vehicul cu numărul {{ vehicle.vehicle_plate }}</h1>
+	<div style="float: right; border-style: inset;%"> Listă Utilizatori:
+		<ul>{% for user in user_list %}
+			<li>{{ user.username }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div style="float: right; border-style: inset;"> Listă Categorii:
+		<ul>{% for category in category_list %}
+			<li>{{ category.category_name }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<form method = "POST"> {% csrf_token %}
+		<table style="border: 10px;">
+		{{ form.as_table }}
+		</table>
+		<input type="submit" value="Salvează">
+	</form>
+{% endblock %}

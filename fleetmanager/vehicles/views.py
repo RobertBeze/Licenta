@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import CategoryForm, VehicleForm
+from .forms import CategoryForm, VehicleForm, VehicleUpdateForm
 from .models import Category, Vehicle
 from django.contrib.auth.models import User
 from django.views import View
@@ -45,9 +45,71 @@ class VehicleDeleteView(View):
 
 
 
+class VehicleUpdateView(View):
+	template_name = 'vehicles/update_vehicle.html'
+
+	def get_obj(self):
+		id = self.kwargs.get('id')
+		obj = None
+		if id != None:
+			obj = get_object_or_404(Vehicle, id=id)
+		return obj
+
+	def get_lista_categorii(self):
+		return Category.objects.exclude(category_name='NONE')
+
+	def get_lista_useri(self):
+		return User.objects.exclude(username='NONE')
+
+	def get(self, request, *args, **kwargs):
+		obj = self.get_obj()
+		driver = category = None
+		if obj.vehicle_driver is not None:
+			driver = obj.vehicle_driver.get_username()
+
+		if obj.vehicle_category is not None:
+			category = obj.vehicle_category.category_name
+		form = VehicleUpdateForm(instance = obj, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
+		context ={
+		'form':form,
+		'category_list': self.get_lista_categorii(),
+		'user_list': self.get_lista_useri(),
+		'vehicle' : obj
+		}
+
+		if not request.user.is_superuser:
+			return redirect('home')
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		obj = self.get_obj()
+		form = VehicleUpdateForm(request.POST, instance = obj)
+		context ={
+		'form':form,
+		'category_list': self.get_lista_categorii(),
+		'user_list': self.get_lista_useri(),
+		'vehicle' : obj
+		}
+		if form.is_valid():
+			form.save()
+			return redirect('vehicle-detail-view', self.kwargs.get('id'))
+
+		if not request.user.is_superuser:
+			return redirect('home')
+		return render(request, self.template_name, context)
+
+
+
 
 class VehicleCreateView(View):
 	template_name = 'vehicles/create_vehicle.html'
+
+	def get_obj(self):
+		id = self.kwargs.get('id')
+		obj = None
+		if id != None:
+			obj = get_object_or_404(Vehicle, id=id)
+		return obj
 
 	def get_lista_categorii(self):
 		return Category.objects.exclude(category_name='NONE')
@@ -60,7 +122,7 @@ class VehicleCreateView(View):
 		context ={
 		'form':form,
 		'category_list': self.get_lista_categorii(),
-		'user_list': self.get_lista_useri()
+		'user_list': self.get_lista_useri(),
 		}
 
 		if not request.user.is_superuser:
@@ -72,11 +134,12 @@ class VehicleCreateView(View):
 		context ={
 		'form':form,
 		'category_list': self.get_lista_categorii(),
-		'user_list': self.get_lista_useri()
+		'user_list': self.get_lista_useri(),
 		}
 		if form.is_valid():
 			form.save()
-			return redirect('home')
+			obj = get_object_or_404(Vehicle, vehicle_plate = form.cleaned_data['vehicle_plate'])
+			return redirect('vehicle-detail-view',obj.id)
 
 		if not request.user.is_superuser:
 			return redirect('home')
@@ -121,21 +184,3 @@ def create_category(request):
 	}
 	return render(request, 'vehicles/create_category.html', context)
 
-
-def create_vehicle(request):
-	lista_categorii = Category.objects.exclude(category_name='NONE')
-	lista_useri = User.objects.exclude(username='NONE')
-
-
-
-	form = VehicleForm(request.POST or None)
-	if form.is_valid():
-		form.save()
-		return redirect('home')
-
-	context ={
-		'form':form,
-		'category_list': lista_categorii,
-		'user_list': lista_useri
-	}
-	return render(request, 'vehicles/create_vehicle.html',context)
