@@ -1,12 +1,3 @@
-<!--
-<div class="navbar">
-  <a href="/">Acasă</a>
-  <a href="/admin">Admin</a>
-  <a style="float:right" href="{% url 'logout' %}">Log Out</a>
-</div>
--->
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ms-auto" style="display: flex; justify-content: flex-end;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Fleet Manager</a>
@@ -15,13 +6,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="{% url 'home' %}">Acasă</a>
-        <a class="nav-link" href="/admin">Admin</a>
-        <a class="nav-link" href="{% url 'vehicle-list' %}">Vehicule</a>
-        
+        <a class="nav-link" href="/">Acasă</a>
       </div>
       <div class="navbar-nav ms-auto">
-        <a class="nav-link float-right" href="{% url 'logout' %}">Log Out</a>
+        <a class="nav-link float-right" href="{% url 'login' %}">Log In</a>
       </div>
     </div>
   </div>

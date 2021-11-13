@@ -4,7 +4,5 @@
 
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Bună ziua, {{ user.username }}</h1>
-	<a href="vehicles/create_category" class='btn btn-secondary'>Adaugă o categorie</a>
-	<a href="vehicles/create_vehicle" class='btn btn-secondary'>Adaugă un vehicul</a>
-	<a href="vehicles/vehicle_list" class='btn btn-secondary'>Listă Vehicule</a>
+	<a href="{% url 'create-category' %}" class='btn btn-secondary'>Adaugă o categorie</a>
 {% endblock %}
