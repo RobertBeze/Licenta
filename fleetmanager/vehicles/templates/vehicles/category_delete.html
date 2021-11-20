@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Ștergere{% endblock %}
+
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Șterge categoria {{ category.category_name }}</h1>
+	<form method='POST'> {% csrf_token %}
+		<h1>Ești sigur că vrei să ștergi categoria: {{ category.category_name }}?</h1>
+		<p><input type="submit" value="DA"/> <a href="{% url 'category-list' %}">NU</a></p>
+	</form>
+{% endblock %}

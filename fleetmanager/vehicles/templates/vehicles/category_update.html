@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+{% block title %}{{ category.category_name }}{% endblock %}
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Modifică categoria: {{ category.category_name }}</h1>
+	<form method = "POST"> {% csrf_token %}
+		<table style="border: 10px;">
+		{{ form.as_table }}
+		</table>
+		<input type="submit" value="Salvează">
+	</form>
+{% endblock %}

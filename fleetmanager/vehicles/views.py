@@ -95,14 +95,6 @@ class VehicleUpdateView(View):
 class VehicleCreateView(View):
 	template_name = 'vehicles/create_vehicle.html'
 
-	def get_obj(self):
-		id = self.kwargs.get('id')
-		obj = None
-		if id != None:
-			obj = get_object_or_404(Vehicle, id=id)
-		return obj
-
-
 	def get(self, request, *args, **kwargs):
 		form = VehicleForm()
 		context ={
@@ -132,7 +124,7 @@ class VehicleView(View):
 	template_name = 'vehicles/vehicle_detail.html'
 
 
-	def get(self, request, id, *arg, **kwargs):
+	def get(self, request, id, *args, **kwargs):
 		context = {}
 		if id != None:
 			obj = get_object_or_404(Vehicle, id=id)
@@ -146,23 +138,119 @@ class VehicleListView(View):
 	def get_queryset(self):
 		return Vehicle.objects.all()
 
-	def get(self, request, *arg, **kwargs):
+	def get(self, request, *args, **kwargs):
 		context = {'vehicle_list':self.get_queryset()}
 		return render(request, self.template_name, context)
 
-def create_category(request):
-	form = CategoryForm(request.POST or None)
 
-	if not request.user.is_superuser:
+class CategoryListView(View):
+	template_name = 'vehicles/category_list.html'
+
+	def get_queryset(self):
+		return Category.objects.all()
+
+	def get(self, request, *args, **kwargs):
+		context = {'category_list': self.get_queryset()}
+		return render(request, self.template_name, context)
+
+class CategoryDeleteView(View):
+	template_name = 'vehicles/category_delete.html'
+
+	def get_category(self):
+		id = self.kwargs.get('id')
+		category = None
+		if id is not None:
+			category = get_object_or_404(Category, id=id)
+		return category
+
+	def get(self, request, id, *args, **kwargs):
+		context = {}
+		category = self.get_category()
+		if category is not None:
+			context['category'] = category
+
+		if not request.user.is_superuser:
 			return redirect('home')
 
-	if form.is_valid():
-		form.save();
-		form = CategoryForm()
-		return redirect('home')
+		return render(request, self.template_name, context)
 
-	context = {
-		'form':form
-	}
-	return render(request, 'vehicles/create_category.html', context)
+	def post(self, request, id, *args, **kwargs):
+		context = {}
+		category = self.get_category()
+
+		if not request.user.is_superuser:
+			return redirect('home')
+
+		if category is not None:
+			category.delete()
+			context['category'] = None
+			return redirect('category-list')
+		return render(request, self.template_name, context)
+
+class CategoryCreateView(View):
+	template_name = 'vehicles/create_category.html'
+
+	def get(self, request, *args, **kwargs):
+		form = CategoryForm()
+		context ={
+		'form':form,
+		}
+
+		if not request.user.is_superuser:
+			return redirect('home')
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		form = CategoryForm(request.POST)
+		context ={
+		'form':form,
+		}
+		if form.is_valid():
+			form.save()
+			return redirect('category-list')
+
+		if not request.user.is_superuser:
+			return redirect('home')
+		return render(request, self.template_name, context)
+
+
+class CategoryUpdateView(View):
+	template_name = 'vehicles/category_update.html'
+
+	def get_obj(self):
+		id = self.kwargs.get('id')
+		obj = None
+		if id != None:
+			obj = get_object_or_404(Category, id=id)
+		return obj
+
+
+	def get(self, request, *args, **kwargs):
+		obj = self.get_obj()
+		form = CategoryForm(instance = obj) #, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
+		context ={
+		'form':form,
+		'category' : obj
+		}
+
+		if not request.user.is_superuser:
+			return redirect('home')
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		obj = self.get_obj()
+		form = CategoryForm(request.POST, instance = obj)
+		context ={
+		'form':form,
+		'category' : obj
+		}
+		if form.is_valid():
+			form.save()
+			return redirect('category-list')
+
+		if not request.user.is_superuser:
+			return redirect('home')
+		return render(request, self.template_name, context)
+
+
 

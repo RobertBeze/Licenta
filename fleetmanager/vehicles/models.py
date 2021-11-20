@@ -17,6 +17,9 @@ class Category(models.Model):
 	def __str__(self):
 		return self.category_name
 
+	def get_absolute_url(self):
+		return reverse("category-view", kwargs={"id":self.id})
+
 class Vehicle(models.Model):
 	vehicle_plate = models.CharField(max_length = 10, unique = True, verbose_name = "Număr înmatriculare")
 	vehicle_odometer = models.PositiveIntegerField(verbose_name = "Kilometraj")
