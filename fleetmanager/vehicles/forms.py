@@ -3,6 +3,7 @@ from .models import Category, Vehicle
 from datetime import date
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
 class DateInput(forms.DateInput):
 	input_type = 'date'

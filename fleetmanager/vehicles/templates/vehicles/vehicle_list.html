@@ -5,15 +5,16 @@
 {% block content %}
 
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Listă Vehicule</h1>
-	<div style="position: absolute; left:39%">
-	<table class="vehlist">
-		<tr>
-			<th>Număr Înmatriculare</th>
-			<th>Șofer</th>
-			<th>Categorie</th>
-			<th>Acțiuni</th>
+	<!-- <div style="position: absolute; left:39%"> -->
+	<div class="position-absolute start-50 translate-middle" style="top: 19.5%">
+	<table class="table table-striped table-hover">
+		<tr scope="row" class="table-dark">
+			<th style="width: 250px;">Număr Înmatriculare</th>
+			<th style="width: 250px;">Șofer</th>
+			<th style="width: 250px;">Categorie</th>
+			<th style="width: 250px;">Acțiuni</th>
 		</tr>
-		<tr>{% for vehicle in vehicle_list %}
+		<tr scope="row">{% for vehicle in vehicle_list %}
 			<td><a href="{{ vehicle.get_absolute_url }}">{{ vehicle.vehicle_plate }}</a></td>
 			<td>{{ vehicle.vehicle_driver }}</td>
 			<td>{{ vehicle.vehicle_category }}</td>

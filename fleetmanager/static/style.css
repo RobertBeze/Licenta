@@ -2,65 +2,23 @@ body {margin:0;
   height: 100%;
 }
 
-/*
-.navbar {
-  overflow: hidden;
-  background-color: #333;
-  position: fixed;
-  top: 0;
-  width: 100%;
-}
-
-.navbar a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-.navbar a:hover {
-  background: #ddd;
-  color: black;
-}*/
 
 .main {
   padding: 16px;
   margin-top: 70px;
-  height: 800px; /* Used in this example to enable scrolling */
+  height: 800px;
   box-shadow: 2px 2px 5px #333;
   margin-right: 100px;
   margin-left: 100px;
 }
 
-/*
-.btn{
-    display:inline-block;
-    color:#444;
-    border:1px solid #CCC;
-    background:#DDD;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-    cursor:pointer;
-    vertical-align:middle;
-    width: 100px;
-    height: 50px;
-    padding: 5px;
-    text-align: center;
-}*/
+
 
 table.vehlist {
   border-collapse: collapse;
   width: 100%;
 }
 
-table.vehlist th, table.vehlist td {
-  text-align: left;
-  padding: 8px;
-}
-
-table.vehlist tr:nth-child(even){background-color: #f2f2f2}
 
 table.vehlist th {
   background-color: #5a5a5a;

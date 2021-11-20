@@ -55,11 +55,6 @@ class VehicleUpdateView(View):
 			obj = get_object_or_404(Vehicle, id=id)
 		return obj
 
-	def get_lista_categorii(self):
-		return Category.objects.exclude(category_name='NONE')
-
-	def get_lista_useri(self):
-		return User.objects.exclude(username='NONE')
 
 	def get(self, request, *args, **kwargs):
 		obj = self.get_obj()
@@ -72,8 +67,6 @@ class VehicleUpdateView(View):
 		form = VehicleUpdateForm(instance = obj) #, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
 		context ={
 		'form':form,
-		'category_list': self.get_lista_categorii(),
-		'user_list': self.get_lista_useri(),
 		'vehicle' : obj
 		}
 
@@ -86,8 +79,6 @@ class VehicleUpdateView(View):
 		form = VehicleUpdateForm(request.POST, instance = obj)
 		context ={
 		'form':form,
-		'category_list': self.get_lista_categorii(),
-		'user_list': self.get_lista_useri(),
 		'vehicle' : obj
 		}
 		if form.is_valid():
@@ -111,18 +102,11 @@ class VehicleCreateView(View):
 			obj = get_object_or_404(Vehicle, id=id)
 		return obj
 
-	def get_lista_categorii(self):
-		return Category.objects.exclude(category_name='NONE')
-
-	def get_lista_useri(self):
-		return User.objects.exclude(username='NONE')
 
 	def get(self, request, *args, **kwargs):
 		form = VehicleForm()
 		context ={
 		'form':form,
-		'category_list': self.get_lista_categorii(),
-		'user_list': self.get_lista_useri(),
 		}
 
 		if not request.user.is_superuser:
@@ -133,8 +117,6 @@ class VehicleCreateView(View):
 		form = VehicleForm(request.POST)
 		context ={
 		'form':form,
-		'category_list': self.get_lista_categorii(),
-		'user_list': self.get_lista_useri(),
 		}
 		if form.is_valid():
 			form.save()

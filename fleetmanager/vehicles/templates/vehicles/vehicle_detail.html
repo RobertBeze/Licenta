@@ -1,20 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ vehicle.vehicle_plate }}{% endblock %}
-
-<!-- vehicle_plate = models.CharField(max_length = 10, unique = True, verbose_name = "Număr înmatriculare")
-	vehicle_odometer = models.PositiveIntegerField(verbose_name = "Kilometraj")
-	vehicle_itp = models.DateField(verbose_name = "ITP expiră la")
-	vehicle_rca = models.DateField(verbose_name = "RCA expiră la")
-	vehicle_last_service = models.PositiveIntegerField(verbose_name = "Ultimul service efectuat KM")
-	vehicle_driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null = True, verbose_name = "Șoferul", blank = True)
-	vehicle_category = models.ForeignKey(Category, on_delete=models.SET_NULL, null = True, verbose_name = "Categoria", blank = True) -->
-
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">{{ vehicle.vehicle_plate }}</h1>
-	<div style="position: absolute; left: 32%">
-	<table class="vehlist"style="widht: 30%">
-		<tr>
+	<div class="position-absolute start-50 translate-middle" style="top: 15.3%">
+	<table class="table table-striped table-hover vehlist"style="widht: 30%">
+		<tr class="table-dark">
 			<th>Număr Înmatriculare</th>
 			<th>Șofer</th>
 			<th>Categorie</th>
