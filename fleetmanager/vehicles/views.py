@@ -65,11 +65,11 @@ class VehicleUpdateView(View):
 		obj = self.get_obj()
 		driver = category = None
 		if obj.vehicle_driver is not None:
-			driver = obj.vehicle_driver.get_username()
+			driver = obj.vehicle_driver
 
 		if obj.vehicle_category is not None:
-			category = obj.vehicle_category.category_name
-		form = VehicleUpdateForm(instance = obj, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
+			category = obj.vehicle_category
+		form = VehicleUpdateForm(instance = obj) #, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
 		context ={
 		'form':form,
 		'category_list': self.get_lista_categorii(),

@@ -66,3 +66,8 @@ table.vehlist th {
   background-color: #5a5a5a;
   color: white;
 }
+
+.bg-image{
+  background-image: url('bgimg.jpg');
+  height: 94.2vh
+}

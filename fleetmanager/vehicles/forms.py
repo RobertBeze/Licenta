@@ -4,15 +4,17 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
+class DateInput(forms.DateInput):
+	input_type = 'date'
 
 class VehicleForm(forms.ModelForm):
 	vehicle_plate = forms.CharField(label='Numărul înmatriculare')
 	vehicle_odometer = forms.IntegerField(label='Kilometraj')
-	vehicle_itp = forms.DateField(label='ITP expiră la', help_text='AAAA-LL-ZZ')
-	vehicle_rca = forms.DateField(label='RCA expiră la',help_text='AAAA-LL-ZZ')
+	vehicle_itp = forms.DateField(label='ITP expiră la', widget=DateInput())
+	vehicle_rca = forms.DateField(label='RCA expiră la', widget=DateInput())
 	vehicle_last_service = forms.IntegerField(label='KM ultima revizie')
-	vehicle_driver = forms.CharField(label='Șofer', required=False)
-	vehicle_category = forms.CharField(label='Categoria', required=False)
+	vehicle_driver = forms.ModelChoiceField(queryset=User.objects.all(), required = False, label = 'Șofer')
+	vehicle_category = forms.ModelChoiceField(queryset=Category.objects.all(), required = False, label = 'Categorie')
 
 	class Meta:
 		model = Vehicle
@@ -81,65 +83,20 @@ class VehicleForm(forms.ModelForm):
 			raise forms.ValidationError("KM de la ultima revizie trebuie să fie mai mici decât kilometrajul actual!")
 		return vehicle_last_service
 
-	def clean_vehicle_driver(self, *args, **kwargs):
-		vehicle_driver = self.cleaned_data.get('vehicle_driver')
-		user_list = User.objects.all()
-		k = 0
-
-		if not vehicle_driver:
-			#return User.objects.get(username='NONE')
-			return None
-
-		for user in user_list:
-			if vehicle_driver.lower() == user.get_username().lower():
-				my_user = user
-				k=1
-				break
-
-		if k == 0:
-			raise forms.ValidationError("Selectați un utilizator valid!")
-
-		if not vehicle_driver.isalnum():
-			raise forms.ValidationError("Doar caractere și cifre!")
-
-		return my_user
-
-	def clean_vehicle_category(self, *args, **kwargs):
-		vehicle_category = self.cleaned_data.get('vehicle_category')
-		category_list = Category.objects.all()
-		k=0
-
-		if not vehicle_category:
-			#return Category.objects.get(category_name='NONE')
-			return None
-
-		for cat in category_list:
-			if cat.category_name.lower() == vehicle_category.lower():
-				my_cat = cat
-				k=1
-				break
-
-		if k == 0:
-			raise forms.ValidationError("Selectați o categorie validă!")
-
-		if not vehicle_category.isalnum():
-			raise forms.ValidationError("Doar caractere și cifre!")
-
-		return my_cat
-
 
 
 class VehicleUpdateForm(forms.ModelForm):
 	vehicle_odometer = forms.IntegerField(label='Kilometraj')
-	vehicle_itp = forms.DateField(label='ITP expiră la', help_text='AAAA-LL-ZZ')
-	vehicle_rca = forms.DateField(label='RCA expiră la',help_text='AAAA-LL-ZZ')
+	vehicle_itp = forms.DateField(label='ITP expiră la', widget=DateInput())
+	vehicle_rca = forms.DateField(label='RCA expiră la', widget=DateInput())
 	vehicle_last_service = forms.IntegerField(label='KM ultima revizie')
-	vehicle_driver = forms.CharField(label='Șofer', required=False)
-	vehicle_category = forms.CharField(label='Categoria', required=False)
+	vehicle_driver = forms.ModelChoiceField(queryset=User.objects.all(), required = False, label = 'Șofer')
+	vehicle_category = forms.ModelChoiceField(queryset=Category.objects.all(), required = False, label = 'Categorie')
 
 	class Meta:
 		model = Vehicle
 		fields = [
+			'vehicle_plate',
 			'vehicle_odometer',
 			'vehicle_itp',
 			'vehicle_rca',
@@ -147,6 +104,20 @@ class VehicleUpdateForm(forms.ModelForm):
 			'vehicle_driver',
 			'vehicle_category' 
 		]
+
+	def clean_vehicle_plate(self, *args, **kwargs):
+		vehicle_plate = self.cleaned_data.get('vehicle_plate')
+		#obj_list = Vehicle.objects.all()
+		#for obj in obj_list:
+		#	if vehicle_plate.lower() == obj.vehicle_plate.lower():
+		#		raise forms.ValidationError("Acest număr de înmatriculare se află deja în baza de date!")
+		if not vehicle_plate.isalnum():
+			raise forms.ValidationError("Numărul de înmatriculare trebuie să conțină doar cifre și litere!")
+
+		if len(vehicle_plate) > 7:
+			raise forms.ValidationError("Lungimea maximă este de 7 caractere!")
+
+		return vehicle_plate.upper()
 
 	def clean_vehicle_odometer(self, *args, **kwargs):
 		vehicle_odometer = self.cleaned_data.get('vehicle_odometer')
@@ -188,53 +159,6 @@ class VehicleUpdateForm(forms.ModelForm):
 		if vehicle_last_service > vehicle_odometer:
 			raise forms.ValidationError("KM de la ultima revizie trebuie să fie mai mici decât kilometrajul actual!")
 		return vehicle_last_service
-
-	def clean_vehicle_driver(self, *args, **kwargs):
-		vehicle_driver = self.cleaned_data.get('vehicle_driver')
-		user_list = User.objects.all()
-		k = 0
-
-		if not vehicle_driver:
-			#return User.objects.get(username='NONE')
-			return None
-
-		for user in user_list:
-			if vehicle_driver.lower() == user.get_username().lower():
-				my_user = user
-				k=1
-				break
-
-		if k == 0:
-			raise forms.ValidationError("Selectați un utilizator valid!")
-
-		if not vehicle_driver.isalnum():
-			raise forms.ValidationError("Doar caractere și cifre!")
-
-		return my_user
-
-	def clean_vehicle_category(self, *args, **kwargs):
-		vehicle_category = self.cleaned_data.get('vehicle_category')
-		category_list = Category.objects.all()
-		k=0
-
-		if not vehicle_category:
-			#return Category.objects.get(category_name='NONE')
-			return None
-
-		for cat in category_list:
-			if cat.category_name.lower() == vehicle_category.lower():
-				my_cat = cat
-				k=1
-				break
-
-		if k == 0:
-			raise forms.ValidationError("Selectați o categorie validă!")
-
-		if not vehicle_category.isalnum():
-			raise forms.ValidationError("Doar caractere și cifre!")
-
-		return my_cat
-
 
 
 
