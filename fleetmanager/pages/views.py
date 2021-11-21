@@ -96,7 +96,6 @@ class UserPwdView(View):
 
 		if form.is_valid():
 			pwd = form.cleaned_data.get('password1')
-			print(pwd)
 			obj.set_password(form.cleaned_data.get('password1'))
 			obj.save()
 			return redirect('user-list')

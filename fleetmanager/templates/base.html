@@ -14,8 +14,8 @@
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
 <body>
-{% if user.is_authenticated %}
-  {% if user.is_superuser %}
+{% if request.user.is_authenticated %}
+  {% if request.user.is_superuser %}
     {% include 'navbar_admin.html' %}
 
   {% else %}
