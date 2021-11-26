@@ -7,6 +7,8 @@ class UserForm(forms.Form):
 	username = forms.CharField(label="Nume", min_length=4, max_length=150)
 	password1 = forms.CharField(label="Parola", widget=forms.PasswordInput)
 	password2 = forms.CharField(label="Repetă parola", widget=forms.PasswordInput)
+	admin = forms.BooleanField(label="Administrator")
+
 
 	def clean_username(self):
 		username = self.cleaned_data.get('username')
@@ -25,7 +27,10 @@ class UserForm(forms.Form):
 		return password2
 
 	def save(self, commit = True):
-		user = User.objects.create_user(username = self.cleaned_data['username'], email=None, password = self.cleaned_data['password1'])
+		if not self.cleaned_data['admin']:
+			user = User.objects.create_user(username = self.cleaned_data['username'], email=None, password = self.cleaned_data['password1'])
+		else:
+			user = User.objects.create_superuser(username = self.cleaned_data['username'], email=None, password = self.cleaned_data['password1'])
 		return user
 
 class UserPwd(forms.Form):
