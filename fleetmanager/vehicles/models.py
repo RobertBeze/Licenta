@@ -20,12 +20,17 @@ class Category(models.Model):
 	def get_absolute_url(self):
 		return reverse("category-view", kwargs={"id":self.id})
 
+
+
+# class Service():
+# id masina, data, detalii, cost
 class Vehicle(models.Model):
 	vehicle_plate = models.CharField(max_length = 10, unique = True, verbose_name = "Număr înmatriculare")
 	vehicle_odometer = models.PositiveIntegerField(verbose_name = "Kilometraj")
 	vehicle_itp = models.DateField(verbose_name = "ITP expiră la")
 	vehicle_rca = models.DateField(verbose_name = "RCA expiră la")
 	vehicle_last_service = models.PositiveIntegerField(verbose_name = "Ultimul service efectuat KM")
+	# legatura cu clasa Service() / could be null
 	vehicle_driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null = True, verbose_name = "Șoferul", blank = True)
 	vehicle_category = models.ForeignKey(Category, on_delete=models.SET_NULL, null = True, verbose_name = "Categoria", blank = True)
 
