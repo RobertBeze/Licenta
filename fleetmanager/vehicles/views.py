@@ -64,7 +64,7 @@ class VehicleUpdateView(View):
 
 		if obj.vehicle_category is not None:
 			category = obj.vehicle_category
-		form = VehicleUpdateForm(instance = obj) #, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
+		form = VehicleUpdateForm(instance = obj)
 		context ={
 		'form':form,
 		'vehicle' : obj
@@ -227,7 +227,7 @@ class CategoryUpdateView(View):
 
 	def get(self, request, *args, **kwargs):
 		obj = self.get_obj()
-		form = CategoryForm(instance = obj) #, initial={'vehicle_driver' : driver, 'vehicle_category' : category})
+		form = CategoryForm(instance = obj)
 		context ={
 		'form':form,
 		'category' : obj

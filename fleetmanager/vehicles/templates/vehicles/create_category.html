@@ -4,8 +4,10 @@
 {% block title %}Adaugă Categorie{% endblock %}
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Adaugă o categorie</h1>
+	<div class='form-group'>
 	<form method = "POST"> {% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" value="Salvează">
 	</form>
+	</div>
 {% endblock %}

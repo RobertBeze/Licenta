@@ -17,6 +17,14 @@ class VehicleForm(forms.ModelForm):
 	vehicle_driver = forms.ModelChoiceField(queryset=User.objects.all(), required = False, label = 'Șofer')
 	vehicle_category = forms.ModelChoiceField(queryset=Category.objects.all(), required = False, label = 'Categorie')
 
+	vehicle_plate.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_odometer.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_itp.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_rca.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_last_service.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_driver.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_category.widget.attrs.update({'class':'form-control w-25'})
+
 	class Meta:
 		model = Vehicle
 		fields = [
@@ -87,12 +95,21 @@ class VehicleForm(forms.ModelForm):
 
 
 class VehicleUpdateForm(forms.ModelForm):
+	vehicle_plate = forms.CharField(label='Numărul înmatriculare')
 	vehicle_odometer = forms.IntegerField(label='Kilometraj')
 	vehicle_itp = forms.DateField(label='ITP expiră la', widget=DateInput())
 	vehicle_rca = forms.DateField(label='RCA expiră la', widget=DateInput())
 	vehicle_last_service = forms.IntegerField(label='KM ultima revizie')
 	vehicle_driver = forms.ModelChoiceField(queryset=User.objects.all(), required = False, label = 'Șofer')
 	vehicle_category = forms.ModelChoiceField(queryset=Category.objects.all(), required = False, label = 'Categorie')
+
+	vehicle_plate.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_odometer.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_itp.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_rca.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_last_service.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_driver.widget.attrs.update({'class':'form-control w-25'})
+	vehicle_category.widget.attrs.update({'class':'form-control w-25'})
 
 	class Meta:
 		model = Vehicle
@@ -165,6 +182,9 @@ class VehicleUpdateForm(forms.ModelForm):
 
 class CategoryForm(forms.ModelForm):
 	category_name = forms.CharField(label='Numele categoriei')
+
+	category_name.widget.attrs.update({'class':'form-control w-25'})
+
 	class Meta:
 		model = Category
 		fields = [

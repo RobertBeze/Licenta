@@ -9,6 +9,11 @@ class UserForm(forms.Form):
 	password2 = forms.CharField(label="Repetă parola", widget=forms.PasswordInput)
 	admin = forms.BooleanField(label="Administrator")
 
+	username.widget.attrs.update({'class':'form-control w-25'})
+	password1.widget.attrs.update({'class':'form-control w-25'})
+	password2.widget.attrs.update({'class':'form-control w-25'})
+	admin.widget.attrs.update({'class':'form-radio'})
+
 
 	def clean_username(self):
 		username = self.cleaned_data.get('username')
@@ -36,6 +41,10 @@ class UserForm(forms.Form):
 class UserPwd(forms.Form):
 	password1 = forms.CharField(label="Parola nouă", widget=forms.PasswordInput)
 	password2 = forms.CharField(label="Repetă parola", widget=forms.PasswordInput)
+
+
+	password1.widget.attrs.update({'class':'form-control w-25'})
+	password2.widget.attrs.update({'class':'form-control w-25'})
 
 
 	def clean_password2(self):
