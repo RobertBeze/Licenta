@@ -7,7 +7,7 @@ class UserForm(forms.Form):
 	username = forms.CharField(label="Nume", min_length=4, max_length=150)
 	password1 = forms.CharField(label="Parola", widget=forms.PasswordInput)
 	password2 = forms.CharField(label="Repetă parola", widget=forms.PasswordInput)
-	admin = forms.BooleanField(label="Administrator")
+	admin = forms.BooleanField(label="Administrator", required = False)
 
 	username.widget.attrs.update({'class':'form-control w-25'})
 	password1.widget.attrs.update({'class':'form-control w-25'})
