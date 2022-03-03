@@ -143,6 +143,23 @@ class VehicleListView(View):
 		return render(request, self.template_name, context)
 
 
+class VehicleSearchView(View):
+	template_name = 'vehicles/vehicle_list_search.html'
+
+	def post(self, request, *args, **kwargs):
+		searched = request.POST['searched']
+		veh = Vehicle.objects.filter(vehicle_plate__contains=searched)
+		if veh.count() == 0:
+			context = {'notfound': True}
+		else:
+			context = {'vehicle_list':veh, 'searched':searched}
+		return render(request, self.template_name, context)
+
+	def get(self, request, *args, **kwargs):
+		context = {'searched': False}
+		return render(request, self.template_name, context)
+
+
 class CategoryListView(View):
 	template_name = 'vehicles/category_list.html'
 

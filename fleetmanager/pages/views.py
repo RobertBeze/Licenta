@@ -60,6 +60,22 @@ class UserListView(View):
 		return render(request, self.template_name, context)
 
 
+class UserSearchView(View):
+	template_name = 'pages/user_list_search.html'
+
+	def post(self, request, *args, **kwargs):
+		searched = request.POST['searched']
+		usr = User.objects.filter(username__contains=searched)
+		if usr.count() == 0:
+			context = {'notfound': True}
+		else:
+			context = {'user_list':usr, 'searched':searched}
+		return render(request, self.template_name, context)
+
+	def get(self, request, *args, **kwargs):
+		context = {'searched': False}
+		return render(request, self.template_name, context)
+
 class UserPwdView(View):
 	template_name = 'pages/user_pwd.html'
 
