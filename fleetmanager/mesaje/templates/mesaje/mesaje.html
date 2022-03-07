@@ -1,7 +1,32 @@
 {% extends 'base.html' %}
-
 {% block title %}Listă Inbox{% endblock %}
 
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Conversație cu {{ recipient }}</h1>
+	<div class="form-group overflow-auto"style="width:600px;height: 300px;background-color: rgb(232, 232, 232);" id="listamesaje">
+	{% for mesaj in mesaje%}
+	{% if mesaj.sender == user %}
+		<p>
+			<span style="color: #0000ff">{{ user }}@{{ mesaj.date }}: </span>{{ mesaj.body }}
+		</p>
+	{% else %}
+		<p>
+			<span style="color: #ff0000">{{ mesaj.sender }}@{{ mesaj.date }}: </span>{{ mesaj.body }}
+		</p>
+	{% endif %}
+	{% endfor %}
+	</div>
+	<div class="input-group">
+		<form class="d-flex" method="POST" action="{% url 'direct-msg' recipient %}"> {% csrf_token %}
+			<textarea class="form-control me-2" type="search" placeholder="Mesaj" name="msgbody" style="width: 450px; height: 50px;"></textarea>
+			<button class="btn btn-secondary" type="submit">Trimite Mesaj</button>
+		</form>
+	</div>
+	<script type="text/javascript">
+		function code(){
+			var element = document.getElementById("listamesaje");
+			element.scrollTop = element.scrollHeight;
+		}
+		window.onload = code;
+	</script>
 {% endblock %}

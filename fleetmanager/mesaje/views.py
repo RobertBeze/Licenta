@@ -11,10 +11,14 @@ class InboxView(View):
 
 	def get(self, request, *args, **kwargs):
 		mesaje = Message.objects.filter(user=request.user)
-		lista = []
+		lista = {}
 		for mesaj in mesaje:
-			if mesaj.sender != request.user:
-				lista.append(mesaj.sender.username)
+			if mesaj.recipient == request.user:
+				if mesaj.sender.username in lista.keys():
+					if lista[mesaj.sender.username] == True and mesaj.is_read == False:
+						lista[mesaj.sender.username] = False
+				else:
+					lista[mesaj.sender.username] = mesaj.is_read
 
 		context={'utilizatori' : lista}
 		return render(request, self.template_name, context)
@@ -35,7 +39,19 @@ class InboxWithView(View):
 		mesaje.sort(key=lambda x: x.date, reverse=False)
 
 		for mesaj in mesaje:
-			print(mesaj.body)
+			mesaj.is_read = True
+			mesaj.save()
 
 		context = {'recipient' : username, 'mesaje':mesaje}
 		return render(request, self.template_name, context)
+
+	def post(self, request, username, *args, **kwargs):
+		lista = User.objects.filter(username=username)
+		if lista.count() != 0:
+			usr = lista[0]
+		else:
+			return redirect('inbox')
+
+		mesaj = request.POST['msgbody']
+		Message.send_message(request.user, usr, mesaj);
+		return redirect('direct-msg', username = username)

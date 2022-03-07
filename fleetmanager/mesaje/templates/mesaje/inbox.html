@@ -4,7 +4,11 @@
 
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Listă Inbox</h1>
-	{% for utilizator in utilizatori %}
-	<a href="{% url 'direct-msg' utilizator %}" class='btn btn-secondary'>{{ utilizator }}</a>
+	{% for utilizator, valoare in utilizatori.items %}
+	{%  if valoare == True %}
+		<a href="{% url 'direct-msg' utilizator %}" class='btn btn-secondary'>{{ utilizator }}</a>
+	{% else %}
+		<a href="{% url 'direct-msg' utilizator %}" class='btn btn-danger'>{{ utilizator }}</a>
+	{% endif %}
 	{% endfor %}
 {% endblock %}
