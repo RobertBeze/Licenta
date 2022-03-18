@@ -3,6 +3,13 @@
 {% block title %}Listă Inbox{% endblock %}
 
 {% block content %}
+	<script type="text/javascript">
+		const timeout = setTimeout(alertFunc,5*60*1000);
+
+		function alertFunc(){
+			location.href = "{% url 'inbox' %}"
+		}
+	</script>
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Listă Inbox</h1>
 	{% for utilizator, valoare in utilizatori.items %}
 	{%  if valoare == True %}

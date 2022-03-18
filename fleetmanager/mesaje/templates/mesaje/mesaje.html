@@ -2,6 +2,13 @@
 {% block title %}Listă Inbox{% endblock %}
 
 {% block content %}
+	<script type="text/javascript">
+		const timeout = setTimeout(alertFunc,5*60*1000);
+
+		function alertFunc(){
+			location.href = "{% url 'direct-msg' recipient %}"
+		}
+	</script>
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Conversație cu {{ recipient }}</h1>
 	<div class="form-group overflow-auto"style="width:600px;height: 300px;background-color: rgb(232, 232, 232);" id="listamesaje">
 	{% for mesaj in mesaje%}
