@@ -11,6 +11,7 @@ class InboxView(View):
 
 	def get(self, request, *args, **kwargs):
 		mesaje = Message.objects.filter(user=request.user)
+		lista_utilizatori = User.objects.exclude(id=request.user.id)
 		lista = {}
 		for mesaj in mesaje:
 			if mesaj.recipient == request.user:
@@ -19,8 +20,10 @@ class InboxView(View):
 						lista[mesaj.sender.username] = False
 				else:
 					lista[mesaj.sender.username] = mesaj.is_read
+			elif mesaj.sender == request.user:
+				lista[mesaj.recipient.username] = True
 
-		context={'utilizatori' : lista}
+		context={'utilizatori' : lista, 'lista' : lista_utilizatori}
 		return render(request, self.template_name, context)
 
 
@@ -31,6 +34,7 @@ class InboxWithView(View):
 		lista = User.objects.filter(username=username)
 		if lista.count() != 0:
 			usr = lista[0]
+			print(lista[0])
 		else:
 			return redirect('inbox')
 		mesaje_primite = Message.objects.filter(user=request.user, sender=usr)

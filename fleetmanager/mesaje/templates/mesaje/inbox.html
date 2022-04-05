@@ -11,6 +11,17 @@
 		}
 	</script>
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Listă Inbox</h1>
+	<div class="dropdown">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+	    	Mesaj Nou
+	  	</button>
+	  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+	  		{% for u in lista %}
+	    	<li><a class="dropdown-item" href="{% url 'direct-msg' u.username %}">{{ u.username }}</a></li>
+	    	{% endfor %}
+	  	</ul>
+	</div>
+	<br>
 	{% for utilizator, valoare in utilizatori.items %}
 	{%  if valoare == True %}
 		<a href="{% url 'direct-msg' utilizator %}" class='btn btn-secondary'>{{ utilizator }}</a>
