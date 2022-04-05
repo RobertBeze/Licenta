@@ -34,7 +34,6 @@ class InboxWithView(View):
 		lista = User.objects.filter(username=username)
 		if lista.count() != 0:
 			usr = lista[0]
-			print(lista[0])
 		else:
 			return redirect('inbox')
 		mesaje_primite = Message.objects.filter(user=request.user, sender=usr)
