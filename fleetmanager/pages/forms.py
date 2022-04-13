@@ -55,3 +55,18 @@ class UserPwd(forms.Form):
 			raise forms.ValidationError("Parolele diferă!")
 
 		return password2
+
+
+class VehicleAddKMForm(forms.Form):
+	vehicle_odometer = forms.IntegerField(label='Kilometraj')
+	vehicle_odometer.widget.attrs.update({'class':'form-control w-25'})
+
+	def clean_vehicle_odometer(self, *args, **kwargs):
+		vehicle_odometer = self.cleaned_data.get('vehicle_odometer')
+		if not isinstance(vehicle_odometer, int):
+			raise forms.ValidationError("Doar cifre!")
+		if vehicle_odometer < 0:
+			raise forms.ValidationError("Doar numere pozitive")
+		if vehicle_odometer > 1000:
+			raise forms.ValidationError("Nu se pot parcurge mai mult de 1000km într-o zi")
+		return vehicle_odometer

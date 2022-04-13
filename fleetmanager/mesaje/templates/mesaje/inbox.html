@@ -17,7 +17,11 @@
 	  	</button>
 	  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 	  		{% for u in lista %}
+	  		{% if u.is_superuser %}
+	    	<li><a class="dropdown-item" href="{% url 'direct-msg' u.username %}" style="color:red">{{ u.username }} - Administrator</a></li>
+	    	{% else %}
 	    	<li><a class="dropdown-item" href="{% url 'direct-msg' u.username %}">{{ u.username }}</a></li>
+	    	{% endif %}
 	    	{% endfor %}
 	  	</ul>
 	</div>

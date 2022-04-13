@@ -4,4 +4,29 @@
 
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Bună ziua, {{ user.username }}</h1>
+	{% if vehicle %}
+	<div class="position-absolute start-50 translate-middle" style="top: 15.3%">
+	<table class="table table-striped table-hover vehlist">
+		<tr class="table-dark">
+			<th>Număr Înmatriculare</th>
+			<th>Șofer</th>
+			<th>Categorie</th>
+			<th>KM</th>
+			<th>ITP</th>
+			<th>RCA</th>
+			<th>KM ultima revizie</th>
+		</tr>
+		<tr>
+			<td>{{ vehicle.vehicle_plate }}</td>
+			<td>{{ vehicle.vehicle_driver }}</td>
+			<td>{{ vehicle.vehicle_category }}</td>
+			<td>{{ vehicle.vehicle_odometer }}</td>
+			<td>{{ vehicle.vehicle_itp }}</td>
+			<td>{{ vehicle.vehicle_rca }}</td>
+			<td>{{ vehicle.vehicle_last_service }}</td>
+		</tr>
+	</table>
+	</div>
+	<a class='btn btn-secondary' href="{% url 'add-km' %}">Adaugă kilometri</a>
+	{% endif %}
 {% endblock %}

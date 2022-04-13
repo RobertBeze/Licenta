@@ -92,6 +92,18 @@ class VehicleForm(forms.ModelForm):
 			raise forms.ValidationError("KM de la ultima revizie trebuie să fie mai mici decât kilometrajul actual!")
 		return vehicle_last_service
 
+	def clean_vehicle_driver(self,*args,**kwargs):
+		vehicle_driver = self.cleaned_data.get('vehicle_driver')
+		obj = Vehicle.objects.filter(vehicle_driver=vehicle_driver)
+		if vehicle_driver == None:
+			return vehicle_driver
+		else:
+			for v in obj:
+				if v.vehicle_driver == vehicle_driver:
+					raise forms.ValidationError("Un șofer poate avea în grijă doar un singur autovehicul")
+		return vehicle_driver
+
+
 
 
 class VehicleUpdateForm(forms.ModelForm):
@@ -122,6 +134,17 @@ class VehicleUpdateForm(forms.ModelForm):
 			'vehicle_driver',
 			'vehicle_category' 
 		]
+
+	def clean_vehicle_driver(self,*args,**kwargs):
+		vehicle_driver = self.cleaned_data.get('vehicle_driver')
+		obj = Vehicle.objects.filter(vehicle_driver=vehicle_driver)
+		if vehicle_driver == None:
+			return vehicle_driver
+		else:
+			for v in obj:
+				if v.vehicle_driver == vehicle_driver:
+					raise forms.ValidationError("Un șofer poate avea în grijă doar un singur autovehicul")
+		return vehicle_driver
 
 	def clean_vehicle_plate(self, *args, **kwargs):
 		vehicle_plate = self.cleaned_data.get('vehicle_plate')
