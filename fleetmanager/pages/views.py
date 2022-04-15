@@ -5,6 +5,8 @@ from .forms import UserForm, UserPwd, VehicleAddKMForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from vehicles.models import Vehicle
+import datetime
+from dateutil.relativedelta import relativedelta
 
 # Create your views here.
 class HomeView(View):
@@ -20,7 +22,29 @@ class HomeView(View):
 
 		if request.user.is_superuser:
 			self.template_name = 'pages/home_admin.html'
-			return render(request, self.template_name)
+			today = datetime.date.today()
+			month = today + relativedelta(months=1)
+			itp_expirat = Vehicle.objects.filter(vehicle_itp__lte=today)
+			itp_luna = Vehicle.objects.filter(vehicle_itp__lte=month).exclude(vehicle_itp__lte=today)
+			rca_expirat = Vehicle.objects.filter(vehicle_rca__lte=today)
+			rca_luna = Vehicle.objects.filter(vehicle_rca__lte=month).exclude(vehicle_rca__lte=today)
+			context={
+				'itp_expirat':itp_expirat,
+				'itp_luna':itp_luna,
+				'rca_expirat':rca_expirat,
+				'rca_luna':rca_luna,
+			}
+
+			if not itp_expirat.exists():
+				context['itp_expirat'] = None
+			if not itp_luna.exists():
+				context['itp_luna'] = None
+			if not rca_expirat.exists():
+				context['rca_expirat'] = None
+			if not rca_luna.exists():
+				context['rca_luna'] = None
+
+			return render(request, self.template_name,context)
 
 		context = {'vehicle' : self.get_obj(request)}
 		self.template_name = 'pages/home.html'

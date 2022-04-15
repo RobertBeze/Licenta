@@ -22,8 +22,7 @@ class Category(models.Model):
 
 
 
-# class Service():
-# id masina, data, detalii, cost
+
 class Vehicle(models.Model):
 	vehicle_plate = models.CharField(max_length = 10, unique = True, verbose_name = "Număr înmatriculare")
 	vehicle_odometer = models.PositiveIntegerField(verbose_name = "Kilometraj")

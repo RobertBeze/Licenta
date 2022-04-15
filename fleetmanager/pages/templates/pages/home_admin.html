@@ -4,4 +4,118 @@
 
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Bună ziua, {{ user.username }}</h1>
+
+	{% if itp_expirat %}
+	<table class="table table-striped table-hover" id="itp-expirat">
+		<tr scope="row" class="table-danger">
+			<th colspan="2">ITP Expirat</th>
+			<th colspan="2"><button class="btn btn-secondary" type="button" id="btnitpexpirat">Descarca PDF</button></th>
+		</tr>
+		<tr scope="row" class="table-dark">
+			<th>Numar Inmatriculare</th>
+			<th>Categorie</th>
+			<th>Sofer</th>
+			<th>ITP</th>
+		</tr>
+		<tr scope="row">{% for vehicle in itp_expirat %}
+			<td><a href="{{ vehicle.get_absolute_url }}">{{ vehicle.vehicle_plate }}</a></td>
+			<td>{{ vehicle.vehicle_category }}</td>
+			<td>{{ vehicle.vehicle_driver }}</td>
+			<td>{{ vehicle.vehicle_itp }}</td>
+		</tr>{% endfor %}
+	</table>
+	<br>
+	{% endif %}
+
+	{% if itp_luna %}
+	<table class="table table-striped table-hover" id="itp-luna">
+		<tr scope="row" class="table-warning">
+			<th colspan="2">ITP Expira In Curand</th>
+			<th colspan="2"><button class="btn btn-secondary" type="button" id="btnitpluna">Descarca PDF</button></th>
+		</tr>
+		<tr scope="row" class="table-dark">
+			<th>Numar Inmatriculare</th>
+			<th>Categorie</th>
+			<th>Sofer</th>
+			<th>ITP</th>
+		</tr>
+		<tr scope="row">{% for vehicle in itp_luna %}
+			<td><a href="{{ vehicle.get_absolute_url }}">{{ vehicle.vehicle_plate }}</a></td>
+			<td>{{ vehicle.vehicle_category }}</td>
+			<td>{{ vehicle.vehicle_driver }}</td>
+			<td>{{ vehicle.vehicle_itp }}</td>
+		</tr>{% endfor %}
+	</table>
+	<br>
+	{% endif %}
+
+	{% if rca_expirat %}
+	<table class="table table-striped table-hover" id="rca-expirat">
+		<tr scope="row" class="table-danger">
+			<th colspan="2">RCA Expirat</th>
+			<th colspan="2"><button class="btn btn-secondary" type="button" id="btnrcaexpirat">Descarca PDF</button></th>
+		</tr>
+		<tr scope="row" class="table-dark">
+			<th>Numar Inmatriculare</th>
+			<th>Categorie</th>
+			<th>Sofer</th>
+			<th>RCA</th>
+		</tr>
+		<tr scope="row">{% for vehicle in rca_expirat %}
+			<td><a href="{{ vehicle.get_absolute_url }}">{{ vehicle.vehicle_plate }}</a></td>
+			<td>{{ vehicle.vehicle_category }}</td>
+			<td>{{ vehicle.vehicle_driver }}</td>
+			<td>{{ vehicle.vehicle_rca }}</td>
+		</tr>{% endfor %}
+	</table>
+	<br>
+	{% endif %}
+
+	{% if rca_luna %}
+	<table class="table table-striped table-hover" id="rca-luna">
+		<tr scope="row" class="table-warning">
+			<th colspan="2">RCA Expira In Curand</th>
+			<th colspan="2"><button class="btn btn-secondary" type="button" id="btnrcaluna">Descarca PDF</button></th>
+		</tr>
+		<tr scope="row" class="table-dark">
+			<th>Numar Inmatriculare</th>
+			<th>Categorie</th>
+			<th>Sofer</th>
+			<th>RCA</th>
+		</tr>
+		<tr scope="row">{% for vehicle in rca_luna %}
+			<td><a href="{{ vehicle.get_absolute_url }}">{{ vehicle.vehicle_plate }}</a></td>
+			<td>{{ vehicle.vehicle_category }}</td>
+			<td>{{ vehicle.vehicle_driver }}</td>
+			<td>{{ vehicle.vehicle_rca }}</td>
+		</tr>{% endfor %}
+	</table>
+	<br>
+	{% endif %}
+	<script type="text/javascript">
+	window.jsPDF = window.jspdf.jsPDF;
+	$("#btnitpexpirat").click(function(){
+	    var doc = new jsPDF('p', 'pt', 'a4')
+	    doc.autoTable({ html: '#itp-expirat' })
+	    doc.save('ITPExpirat.pdf')
+	})
+
+	$("#btnitpluna").click(function(){
+	    var doc = new jsPDF()
+	    doc.autoTable({ html: '#itp-luna' })
+	    doc.save('ITPCurand.pdf')
+	})
+
+	$("#btnrcaexpirat").click(function(){
+	    var doc = new jsPDF()
+	    doc.autoTable({ html: '#rca-expirat' })
+	    doc.save('RCAExpirat.pdf')
+	})
+
+	$("#btnrcaluna").click(function(){
+	    var doc = new jsPDF()
+	    doc.autoTable({ html: '#rca-luna' })
+	    doc.save('RCACurand.pdf')
+	})
+	</script>  
 {% endblock %}
