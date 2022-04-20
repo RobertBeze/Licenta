@@ -10,8 +10,15 @@
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
 <body>
+  <!-- {% include 'navbar_default.html' %} -->
+<div class="bg-image" style="height: 100vh;">
   {% include 'navbar_default.html' %}
-<div class="bg-image">
+  <div class="d-flex text-center justify-content-center align-items-center">
+    <img src="{% static 'logo.png' %}" class="img-responsive">
+  </div>
+  <div class="banner-text text-center">
+    <h1>RDFleet : Manager Flotă</h1>
+  </div>
   <div class="rounded-3 position-absolute top-50 start-50 translate-middle" style="text-align: center;">
     <h2>Log In</h2>
     <form method="post">

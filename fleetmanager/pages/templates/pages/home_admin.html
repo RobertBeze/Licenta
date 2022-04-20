@@ -94,27 +94,41 @@
 	{% endif %}
 	<script type="text/javascript">
 	window.jsPDF = window.jspdf.jsPDF;
+	var d = new Date();
+	var data_curenta = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
 	$("#btnitpexpirat").click(function(){
 	    var doc = new jsPDF('p', 'pt', 'a4')
+	    doc.text("Vehicule cu ITP Expirat", 200, 20)
 	    doc.autoTable({ html: '#itp-expirat' })
+	    var finalY = doc.previousAutoTable.finalY;
+	    doc.text(20, finalY+20, "Data generarii: " + data_curenta)
 	    doc.save('ITPExpirat.pdf')
 	})
 
 	$("#btnitpluna").click(function(){
-	    var doc = new jsPDF()
+	    var doc = new jsPDF('p', 'pt', 'a4')
+	    doc.text("Vehicule cu ITP care expira in curand", 170, 20)
 	    doc.autoTable({ html: '#itp-luna' })
+	    var finalY = doc.previousAutoTable.finalY;
+	    doc.text(20, finalY+20, "Data generarii: " + data_curenta)
 	    doc.save('ITPCurand.pdf')
 	})
 
 	$("#btnrcaexpirat").click(function(){
-	    var doc = new jsPDF()
+	    var doc = new jsPDF('p','pt','a4')
+	    doc.text("Vehicule cu RCA Expirat", 200, 20)
 	    doc.autoTable({ html: '#rca-expirat' })
+	    var finalY = doc.previousAutoTable.finalY;
+	    doc.text(20, finalY+20, "Data generarii: " + data_curenta)
 	    doc.save('RCAExpirat.pdf')
 	})
 
 	$("#btnrcaluna").click(function(){
-	    var doc = new jsPDF()
+	    var doc = new jsPDF('p','pt','a4')
+	    doc.text("Vehicule cu RCA care expira in curand", 170, 20)
 	    doc.autoTable({ html: '#rca-luna' })
+	    var finalY = doc.previousAutoTable.finalY;
+	    doc.text(20, finalY+20, "Data generarii: " + data_curenta)
 	    doc.save('RCACurand.pdf')
 	})
 	</script>  
