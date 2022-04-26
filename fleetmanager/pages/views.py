@@ -204,13 +204,20 @@ class FoaieView(View): #lista foi vehicul
 		else:
 			lista_foi = None
 			exists = None
+
+		for f in lista_foi:
+			if f.data_expirare > datetime.date.today():
+				f.expired = True
+				f.save()
+
 		context['foi'] = lista_foi
 		context['exists'] = exists
 		return render(request, self.template_name, context)
 
 	def post(self,request):
 		obj = get_object_or_404(Vehicle, vehicle_driver=request.user)
-		foaie = FoaieParcurs(vehicle=obj, creation_date=datetime.date.today())
+		expire = datetime.date.today() + relativedelta(days=5)
+		foaie = FoaieParcurs(vehicle=obj, creation_date=datetime.date.today(), data_expirare=expire)
 		foaie.save()
 		return redirect('foaie-parcurs')
 

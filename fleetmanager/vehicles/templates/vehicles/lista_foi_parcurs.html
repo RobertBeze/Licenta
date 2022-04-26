@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Foi Parcurs{% endblock %}
+
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Foi parcurs</h1>
+
+	<form method = "POST"> {% csrf_token %}
+		<input class='btn btn-secondary' type="submit" value="Foaie Nouă">
+	</form>
+
+	{% if foi %}
+	<table class="table table-striped table-hover">
+		<tr scope="row" class="table-dark">
+			<th style="width: 250px;">ID</th>
+			<th style="width: 250px;">Numar Înmatriculare</th>
+			<th style="width: 250px;">Data</th>
+			<th style="width: 250px;">Expirat</th>
+			<th style="width: 250px;">Optiuni</th>
+		</tr>
+		<tr scope="row">{% for foaie in foi %}
+			<td><a href="{% url 'foaie-detaliu' foaie.id %}">{{ foaie.id }}</a></td>
+			<td>{{ foaie.vehicle.vehicle_plate }}</td>
+			<td>{{ foaie.creation_date }}</td>
+			<td>{{ foaie.expired }}</td>
+			<td><a href="">Extinde</a> <a href="">Sterge</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% endif %}
+
+{% endblock %}

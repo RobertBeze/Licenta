@@ -7,7 +7,9 @@ from vehicles.models import Vehicle
 class FoaieParcurs(models.Model):
 	vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True, verbose_name="Nr. Înmatriculare", blank = True)
 	creation_date = models.DateField(verbose_name="Data")
+	data_expirare = models.DateField(verbose_name="Data Expirare")
 	expired = models.BooleanField(default=False)
+	procesat = models.BooleanField(default=False)
 
 class DetaliiFoaieParcurs(models.Model):
 	foaie = models.ForeignKey(FoaieParcurs, on_delete=models.SET_NULL, null=True, verbose_name="ID Foaie Parcurs", blank = True)

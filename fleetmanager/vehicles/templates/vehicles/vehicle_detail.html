@@ -28,5 +28,7 @@
 	{% if user.is_superuser %}
 	<a class='btn btn-secondary' href="{{ vehicle.get_absolute_url }}delete">Șterge Vehicul</a>
 	<a class='btn btn-secondary' href="{{ vehicle.get_absolute_url }}update">Modifică Vehicul</a>
+	<br><br>
+	<a href="{% url 'vehicle-parcurs' vehicle.id %}" class="btn btn-secondary">Foi Parcurs</a>
 	{% endif %}
 {% endblock %}

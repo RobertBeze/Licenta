@@ -4,6 +4,9 @@ from .forms import CategoryForm, VehicleForm, VehicleUpdateForm
 from .models import Category, Vehicle
 from django.contrib.auth.models import User
 from django.views import View
+from pages.models import FoaieParcurs, DetaliiFoaieParcurs
+import datetime
+from dateutil.relativedelta import relativedelta
 
 # Create your views here.
 
@@ -271,3 +274,44 @@ class CategoryUpdateView(View):
 
 
 
+class VehicleParcursView(View):
+	template_name = 'vehicles/lista_foi_parcurs.html'
+	def get(self,request,*args,**kwargs):
+		id = self.kwargs.get('id')
+		veh = Vehicle.objects.get(id=id)
+		foi = FoaieParcurs.objects.filter(vehicle=veh)
+
+		for f in foi:
+			if f.data_expirare > datetime.date.today():
+				f.expired = True
+				f.save()
+
+		context = {
+			'foi' : foi,
+		}
+
+		return render(request,self.template_name,context)
+
+	def post(self,request, *args, **kwargs):
+		id = self.kwargs.get('id')
+		obj = get_object_or_404(Vehicle, id=id)
+		expire = datetime.date.today() + relativedelta(days=5)
+		foaie = FoaieParcurs(vehicle=obj, creation_date=datetime.date.today(), data_expirare=expire)
+		foaie.save()
+		return redirect('vehicle-parcurs', id)
+
+class ProceseazaFoiParcurs(View):
+	def get(self, request, *args, **kwargs):
+		foi = FoaieParcurs.objects.all()
+		for f in foi:
+			if f.expired:
+				if not f.procesat:
+					detalii = DetaliiFoaieParcurs.objects.filter(foaie=f)
+					veh = f.vehicle
+					for d in detalii:
+						km = d.km
+						veh.vehicle_odometer = veh.vehicle_odometer + km
+					veh.save()
+					f.procesat = True
+					f.save()
+		return redirect('home')
