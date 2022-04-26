@@ -1,20 +1,24 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
-from .forms import UserForm, UserPwd
+from .forms import UserForm, UserPwd, DetaliuFoaieForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from vehicles.models import Vehicle
 import datetime
 from dateutil.relativedelta import relativedelta
+from .models import FoaieParcurs, DetaliiFoaieParcurs
 
 # Create your views here.
 class HomeView(View):
 	template_name = 'pages/default.html'
 
 	def get_obj(self, request):
-		obj = get_object_or_404(Vehicle, vehicle_driver=request.user)
-		return obj
+		obj = Vehicle.objects.filter(vehicle_driver=request.user)
+		if not obj:
+			return None
+		else:
+			return obj[0]
 
 	def get(self, request, *args, **kwargs):
 		if not request.user.is_authenticated:
@@ -185,3 +189,81 @@ class UserDelView(View):
 
 		return render(request, self.template_name, context)
 
+class FoaieView(View): #lista foi vehicul
+	template_name = 'pages/lista_foi_parcurs.html'
+	def get(self, request):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		if request.user.is_superuser:
+			return redirect('home')
+		context = {}
+		veh = Vehicle.objects.filter(vehicle_driver=request.user)
+		if veh:
+			lista_foi = FoaieParcurs.objects.filter(vehicle=veh[0])
+			exists = True
+		else:
+			lista_foi = None
+			exists = None
+		context['foi'] = lista_foi
+		context['exists'] = exists
+		return render(request, self.template_name, context)
+
+	def post(self,request):
+		obj = get_object_or_404(Vehicle, vehicle_driver=request.user)
+		foaie = FoaieParcurs(vehicle=obj, creation_date=datetime.date.today())
+		foaie.save()
+		return redirect('foaie-parcurs')
+
+
+class FoaieDetaliuView(View):
+	template_name = 'pages/foaie_detaliu.html'
+
+	def get_obj(self):
+		id = self.kwargs.get('id')
+		obj = None
+		if id != None:
+			obj = get_object_or_404(FoaieParcurs, id=id)
+		return obj
+
+	def get(self,request,*args,**kwargs):
+		foaie = self.get_obj()
+		context={}
+		context['foaie'] = foaie
+		detalii = DetaliiFoaieParcurs.objects.filter(foaie=foaie)
+		context['detalii'] = detalii
+
+		return render(request, self.template_name, context)
+
+
+class FoaieDetaliuAddView(View):
+	template_name = 'pages/foaie_detaliu_add.html'
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		form = DetaliuFoaieForm()
+		context = {}
+		context['form'] = form
+		return render(request, self.template_name,context)
+
+	def post(self,request,*args,**kwargs):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		form = DetaliuFoaieForm(request.POST)
+
+		context = {
+			'form' : form,
+		}
+
+		if form.is_valid():
+			arrival = form.cleaned_data.get('arrival')
+			departure = form.cleaned_data.get('departure')
+			date_departure = form.cleaned_data.get('date_departure')
+			date_arrival = form.cleaned_data.get('date_arrival')
+			km = form.cleaned_data.get('km')
+			foaie = FoaieParcurs.objects.filter(id=self.kwargs.get('id'))
+			if foaie:
+				foaie = foaie[0]
+				detaliu = DetaliiFoaieParcurs(foaie=foaie, departure=departure,arrival=arrival,date_departure=date_departure, date_arrival=date_arrival, km=km)
+				detaliu.save()
+				return redirect('foaie-detaliu', self.kwargs.get('id'))
+		return render(request,self.template_name,context)

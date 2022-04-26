@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalii foaie parcurs{% endblock %}
+
+
+{% block content %}
+<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Detalii foaie din data: {{ foaie.creation_date }}</h1>
+<a class="btn btn-secondary" href="{% url 'foaie-detaliu-add' foaie.id %}">Adauga Detalii</a>
+{% if detalii %}
+<table class="table table-striped table-hover">
+	<tr scope="row" class="table-dark">
+		<th style="width: 250px">Localitate Plecare</th>
+		<th style="width: 250px">Localitate Sosire</th>
+		<th style="width: 250px">Data Plecare</th>
+		<th style="width: 250px">Data Sosire</th>
+		<th style="width: 250px">KM Parcursi</th>
+	</tr>
+	<tr scope='row'> {% for d in detalii %}
+		<td>{{ d.departure }}</td>
+		<td>{{ d.arrival }}</td>
+		<td>{{ d.date_departure }}</td>
+		<td>{{ d.date_arrival }}</td>
+		<td>{{ d.km }}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endif %}
+{% endblock %}
