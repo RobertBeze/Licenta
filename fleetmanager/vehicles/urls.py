@@ -13,5 +13,4 @@ urlpatterns = [
     path('category_list/<int:id>/update', views.CategoryUpdateView.as_view(), name='category-update-view'),
     path('category_list/<int:id>/', views.CategoryListView.as_view(), name='category-view'),
     path('search_vehicle/', views.VehicleSearchView.as_view(), name='search-vehicle'),
-
 ]

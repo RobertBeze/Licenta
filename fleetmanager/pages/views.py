@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
-from .forms import UserForm, UserPwd, VehicleAddKMForm
+from .forms import UserForm, UserPwd
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from vehicles.models import Vehicle
@@ -48,34 +48,6 @@ class HomeView(View):
 
 		context = {'vehicle' : self.get_obj(request)}
 		self.template_name = 'pages/home.html'
-		return render(request, self.template_name, context)
-
-class AdKM(View):
-	template_name = 'pages/driver_add_km.html'
-
-	def get_obj(self,request):
-		return get_object_or_404(Vehicle, vehicle_driver=request.user)
-
-	def get(self,request,*args,**kwargs):
-		if not request.user.is_authenticated:
-			return redirect('home')
-		form = VehicleAddKMForm()
-		context = {
-			'form':form,
-		}
-		return render(request, self.template_name,context)
-
-	def post(self,request,*args,**kwargs):
-		if not request.user.is_authenticated:
-			return redirect('home')
-		form = VehicleAddKMForm(request.POST)
-		context = {'form' : form}
-		if form.is_valid():
-			km = form.cleaned_data.get('vehicle_odometer')
-			obj = self.get_obj(request)
-			obj.vehicle_odometer += km
-			obj.save()
-			return redirect('home')
 		return render(request, self.template_name, context)
 
 
