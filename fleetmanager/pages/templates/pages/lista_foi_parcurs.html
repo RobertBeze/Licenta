@@ -18,12 +18,14 @@
 			<th style="width: 250px;">Numar Înmatriculare</th>
 			<th style="width: 250px;">Data</th>
 			<th style="width: 250px;">Expirat</th>
+			<th style="width: 250px;">Procesat</th>
 		</tr>
-		<tr scope="row">{% for foaie in foi %}
-			<td><a href="{% url 'foaie-detaliu' foaie.id %}">{{ foaie.id }}</a></td>
+		<tr scope="row">{% for foaie in foi reversed %}
+			<td>{% if not foaie.procesat %}<a href="{% url 'foaie-detaliu' foaie.id %}">{{ foaie.id }}</a>{% else %}{{ foaie.id }}{% endif %}</td>
 			<td>{{ foaie.vehicle.vehicle_plate }}</td>
 			<td>{{ foaie.creation_date }}</td>
 			<td>{{ foaie.expired }}</td>
+			<td>{{ foaie.procesat }}</td>
 		</tr>
 		{% endfor %}
 	</table>

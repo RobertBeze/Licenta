@@ -201,14 +201,13 @@ class FoaieView(View): #lista foi vehicul
 		if veh:
 			lista_foi = FoaieParcurs.objects.filter(vehicle=veh[0])
 			exists = True
+			for f in lista_foi:
+				if f.data_expirare < datetime.date.today():
+					f.expired = True
+					f.save()
 		else:
 			lista_foi = None
 			exists = None
-
-		for f in lista_foi:
-			if f.data_expirare > datetime.date.today():
-				f.expired = True
-				f.save()
 
 		context['foi'] = lista_foi
 		context['exists'] = exists
@@ -274,3 +273,47 @@ class FoaieDetaliuAddView(View):
 				detaliu.save()
 				return redirect('foaie-detaliu', self.kwargs.get('id'))
 		return render(request,self.template_name,context)
+
+class FoaieExtendView(View):
+	def get(self, request, *args, **kwargs):
+		id = self.kwargs.get('id')
+		foaie = FoaieParcurs.objects.get(id=id)
+		if request.user.is_superuser:
+			if foaie.procesat:
+				return redirect(request.META.get('HTTP_REFERER'))
+			else:
+				foaie.expired = False
+				foaie.data_expirare = datetime.date.today() + relativedelta(days=5)
+				foaie.save()
+				return redirect(request.META.get('HTTP_REFERER'))
+		return redirect('home')
+
+class FoaieRemoveView(View):
+	template_name = 'pages/foaie_delete.html'
+	def get_obj(self):
+		id_cautat=self.kwargs.get('id')
+		obj = FoaieParcurs.objects.filter(id=id_cautat)
+		if obj:
+			return obj[0]
+		return None
+
+
+	def get(self, request, *args, **kwargs):
+		foaie = self.get_obj()
+		if request.user.is_superuser:
+			if foaie:
+				context = {'foaie': foaie}
+				return render(request, self.template_name, context)
+			return redirect('vehicle-list')
+		return redirect('home')
+
+	def post(self, request, *args, **kwargs):
+		foaie = self.get_obj()
+		if request.user.is_superuser:
+			if foaie:
+				detalii = DetaliiFoaieParcurs.objects.filter(foaie=foaie)
+				for d in detalii:
+					d.delete()
+				foaie.delete()
+				return redirect('vehicle-list')
+		return redirect('home')

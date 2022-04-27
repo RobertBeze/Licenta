@@ -282,7 +282,7 @@ class VehicleParcursView(View):
 		foi = FoaieParcurs.objects.filter(vehicle=veh)
 
 		for f in foi:
-			if f.data_expirare > datetime.date.today():
+			if f.data_expirare < datetime.date.today():
 				f.expired = True
 				f.save()
 
@@ -314,4 +314,4 @@ class ProceseazaFoiParcurs(View):
 					veh.save()
 					f.procesat = True
 					f.save()
-		return redirect('home')
+		return redirect('vehicle-list')

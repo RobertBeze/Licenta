@@ -4,6 +4,9 @@
 
 {% block content %}
 	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Foi parcurs</h1>
+	<div class="alert alert-info" role="alert">
+  		Foile de parcurs procesate nu se pot extinde!
+	</div>
 
 	<form method = "POST"> {% csrf_token %}
 		<input class='btn btn-secondary' type="submit" value="Foaie Nouă">
@@ -16,17 +19,18 @@
 			<th style="width: 250px;">Numar Înmatriculare</th>
 			<th style="width: 250px;">Data</th>
 			<th style="width: 250px;">Expirat</th>
+			<th style="width: 250px;">Procesat</th>
 			<th style="width: 250px;">Optiuni</th>
 		</tr>
-		<tr scope="row">{% for foaie in foi %}
+		<tr scope="row">{% for foaie in foi reversed %}
 			<td><a href="{% url 'foaie-detaliu' foaie.id %}">{{ foaie.id }}</a></td>
 			<td>{{ foaie.vehicle.vehicle_plate }}</td>
 			<td>{{ foaie.creation_date }}</td>
 			<td>{{ foaie.expired }}</td>
-			<td><a href="">Extinde</a> <a href="">Sterge</a></td>
+			<td>{{ foaie.procesat }}</td>
+			<td><a href="{% url 'foaie-parcurs-extend' foaie.id %}">Extinde</a> <a href="{% url 'foaie-parcurs-delete' foaie.id %}">Sterge</a></td>
 		</tr>
 		{% endfor %}
 	</table>
 	{% endif %}
-
 {% endblock %}

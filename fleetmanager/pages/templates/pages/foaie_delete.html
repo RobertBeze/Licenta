@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Ștergere{% endblock %}
+
+{% block content %}
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Șterge Foaie Parcurs</h1>
+	<form method='POST'> {% csrf_token %}
+		<h1>Ești sigur că vrei să ștergi foaia de parcurs pentru vehiculul: {{ foaie.vehicle.vehicle_plate }} din data de: {{ foaie.creation_date }}?</h1>
+		<p><input class='btn btn-secondary'type="submit" value="DA"/> <a class='btn btn-secondary' href="{% url 'vehicle-list' %}">NU</a></p>
+	</form>
+{% endblock %}

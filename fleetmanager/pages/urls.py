@@ -13,6 +13,7 @@ urlpatterns = [
     path('parcurs/<int:id>/add', views.FoaieDetaliuAddView.as_view(), name='foaie-detaliu-add'), #adauga detalii
     #path('parcurs/<int:id>/detalii/<int:id_det>/update') #modifica detalii
     #path('parcurs/<int:id>/detalii/<int:id_det>/delete') #sterge detalii
-    #path('parcurs/<int:id>/delete'), #restricted for admin only, sterge foi de parcurs
-    #path('parcurs/<int:id>/extend'), #restricted for admin only, extinde perioada
+
+    path('parcurs/<int:id>/delete', views.FoaieRemoveView.as_view(), name='foaie-parcurs-delete'), #restricted for admin only, sterge foi de parcurs
+    path('parcurs/<int:id>/extend', views.FoaieExtendView.as_view(), name='foaie-parcurs-extend'), #restricted for admin only, extinde perioada
 ]

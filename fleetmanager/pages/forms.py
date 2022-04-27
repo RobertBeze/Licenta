@@ -88,7 +88,6 @@ class DetaliuFoaieForm(forms.Form):
 
 	def clean_arrival(self):
 		arrival = self.cleaned_data.get('arrival')
-
 		if len(arrival)>100:
 			raise forms.ValidationError('Maxim 100 de caractere')
 		res = bool(re.match('[a-zA-Z\s\.\-]+$',arrival))
