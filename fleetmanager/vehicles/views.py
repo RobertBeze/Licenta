@@ -40,6 +40,15 @@ class VehicleDeleteView(View):
 			return redirect('home')
 
 		if vehicle is not None:
+			foi = FoaieParcurs.objects.filter(vehicle=vehicle)
+			if foi:
+				for f in foi:
+					detalii= DetaliiFoaieParcurs.objects.filter(foaie=f)
+					if detalii:
+						for d in detalii:
+							d.delete()
+					f.delete()
+
 			vehicle.delete()
 			context['vehicle'] = None
 			return redirect('vehicle-list')

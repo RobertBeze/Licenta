@@ -317,3 +317,6 @@ class FoaieRemoveView(View):
 				foaie.delete()
 				return redirect('vehicle-list')
 		return redirect('home')
+
+class TopKMView(View):
+	template_name = ''
