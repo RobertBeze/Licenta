@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Listă Vehicule{% endblock %}
+
+{% block content %}
+
+	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Top Vehicule in functie de km parcursi in ultimele 30 de zile</h1>
+	<!-- <div style="position: absolute; left:39%"> -->
+	<br>
+
+	{% if data %}
+	<table class="table table-striped table-hover">
+		<tr scope="row" class="table-dark">
+			<th style="width: 250px;">Număr Înmatriculare</th>
+			<th style="width: 250px;">KM</th>
+		</tr>
+		<tr scope="row">{% for key,value in data %}
+			<td>{{ key }}</td>
+			<td>{{ value }}</td>
+		</tr>{% endfor %}
+	</table>
+	{% else %}
+		<h1 class="alert alert-warning">Foaile de parcurs din ultimele 30 de zile nu sunt procesate</h1>
+	{% endif %}
+{% endblock %}

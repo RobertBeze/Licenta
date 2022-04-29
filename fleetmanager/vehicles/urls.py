@@ -15,5 +15,5 @@ urlpatterns = [
     path('category_list/<int:id>/', views.CategoryListView.as_view(), name='category-view'),
     path('search_vehicle/', views.VehicleSearchView.as_view(), name='search-vehicle'),
     path('parcurs/', views.ProceseazaFoiParcurs.as_view(),name='proceseaza-foi'),
-    #path('topkm/', views.TopKMView().as_view(), name='top-km'),
+    path('topkm/', views.TopKMView.as_view(), name='top-km'),
 ]

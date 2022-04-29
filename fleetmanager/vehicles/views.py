@@ -324,3 +324,33 @@ class ProceseazaFoiParcurs(View):
 					f.procesat = True
 					f.save()
 		return redirect('vehicle-list')
+
+
+class TopKMView(View):
+	template_name = 'vehicles/top_km.html'
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_superuser:
+			return redirect('home')
+
+		data = {}
+		start_date = datetime.date.today() - relativedelta(months=1)
+		end_date = datetime.date.today()
+		am_ceva = False
+		lista_foi = FoaieParcurs.objects.filter(procesat=True)
+		for foaie in lista_foi:
+			if start_date <= foaie.creation_date <= end_date:
+				am_ceva = True
+				veh = foaie.vehicle
+				km = 0
+				detalii = DetaliiFoaieParcurs.objects.filter(foaie=foaie)
+				if detalii:
+					for d in detalii:
+						km = km + d.km
+					data[veh.vehicle_plate] = km
+
+		if am_ceva:
+			data_sorted = sorted(data.items(), key=lambda x: x[1], reverse=True)
+		else:
+			data_sorted = False
+		context = { 'data' : data_sorted}
+		return render(request,self.template_name,context)
