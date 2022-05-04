@@ -18,6 +18,7 @@
 		<th style="width: 250px">Ora Plecare</th>
 		<th style="width: 250px">Ora Sosire</th>
 		<th style="width: 250px">KM Parcursi</th>
+		<th style="width: 250px">Actiuni</th>
 	</tr>
 	<tr scope='row'> {% for d in detalii %}
 		<td>{{ d.departure }}</td>
@@ -25,6 +26,14 @@
 		<td>{{ d.date_departure }}</td>
 		<td>{{ d.date_arrival }}</td>
 		<td>{{ d.km }}</td>
+		<td>
+			<a href="{% url 'detaliu-delete' d.id %}" class="btn">
+				<i class="bi bi-x-square-fill" style="color:#e78200"></i>
+			</a>
+			<a href="{% url 'detaliu-update' d.id %}" class="btn">
+				<i class='bi bi-pencil-square' style="color:#e78200"></i>
+			</a>
+		</td>
 	</tr>
 	{% endfor %}
 </table>

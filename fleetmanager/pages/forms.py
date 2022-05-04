@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import re
+from pages.models import DetaliiFoaieParcurs
 
 
 class UserForm(forms.Form):
@@ -75,6 +76,60 @@ class DetaliuFoaieForm(forms.Form):
 	date_departure.widget.attrs.update({'class':'form-control w-25'})
 	date_arrival.widget.attrs.update({'class':'form-control w-25'})
 	km.widget.attrs.update({'class':'form-control w-25'})
+
+	def clean_departure(self):
+		departure = self.cleaned_data.get('departure')
+		if len(departure)>100:
+			raise forms.ValidationError('Maxim 100 de caractere')
+
+		res = bool(re.match('[a-zA-Z\s\.\-]+$',departure))
+		if not res:
+			raise forms.ValidationError('Doar litere, puncte si spatii sunt permise')
+		return departure
+
+	def clean_arrival(self):
+		arrival = self.cleaned_data.get('arrival')
+		if len(arrival)>100:
+			raise forms.ValidationError('Maxim 100 de caractere')
+		res = bool(re.match('[a-zA-Z\s\.\-]+$',arrival))
+		if not res:
+			raise forms.ValidationError('Doar litere, puncte si spatii sunt permise')
+		return arrival
+
+	def clean_km(self):
+		km = self.cleaned_data.get('km')
+		if km <0:
+			raise forms.ValidationError('Doar numere intregi')
+		return km
+
+class DetaliuUpdateForm(forms.ModelForm):
+	departure = forms.CharField(label='Loc. Plecare')
+	arrival = forms.CharField(label='Loc. Destinatie')
+	date_departure = forms.TimeField(label="Ora Plecare", widget=TimePickerInput)
+	date_arrival = forms.TimeField(label="Ora sosire", widget=TimePickerInput)
+	km =  forms.IntegerField(label="KM Parcursi")
+
+	departure.widget.attrs.update({'class':'form-control w-25'})
+	arrival.widget.attrs.update({'class':'form-control w-25'})
+	date_departure.widget.attrs.update({'class':'form-control w-25'})
+	date_arrival.widget.attrs.update({'class':'form-control w-25'})
+	km.widget.attrs.update({'class':'form-control w-25'})
+
+	class Meta:
+		model = DetaliiFoaieParcurs
+		fields = [
+			'departure',
+			'arrival',
+			'date_departure',
+			'date_arrival',
+			'km',
+		]
+
+	def clean_km(self):
+		km = self.cleaned_data.get('km')
+		if km <0:
+			raise forms.ValidationError('Doar numere intregi')
+		return km
 
 	def clean_departure(self):
 		departure = self.cleaned_data.get('departure')

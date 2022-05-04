@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
-from .forms import UserForm, UserPwd, DetaliuFoaieForm
+from .forms import UserForm, UserPwd, DetaliuFoaieForm, DetaliuUpdateForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from vehicles.models import Vehicle
@@ -318,5 +318,68 @@ class FoaieRemoveView(View):
 				return redirect('vehicle-list')
 		return redirect('home')
 
-class TopKMView(View):
-	template_name = ''
+class DetaliiUpdateView(View):
+	template_name = 'pages/foaie_detaliu_update.html'
+	def get_obj(self):
+		id = self.kwargs.get('id')
+		obj = None
+		if id != None:
+			obj = get_object_or_404(DetaliiFoaieParcurs, id=id)
+		return obj
+
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		obj = self.get_obj()
+		form = DetaliuUpdateForm(instance = obj)
+		context = {
+			'form': form,
+			'detaliu': obj
+		}
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		obj = self.get_obj()
+		form = DetaliuUpdateForm(request.POST, instance = obj)
+		if form.is_valid():
+			foaie_id = obj.foaie.id
+			form.save()
+			return redirect('foaie-detaliu', id=foaie_id)
+
+		context = {
+			'form': form,
+			'detaliu': obj
+		}
+		return render(request, self.template_name,context)
+
+class DetaliiDeleteView(View):
+	template_name = 'pages/foaie_detaliu_delete.html'
+	def get_obj(self):
+		id = self.kwargs.get('id')
+		obj = None
+		if id != None:
+			obj = get_object_or_404(DetaliiFoaieParcurs, id=id)
+		return obj
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		obj = self.get_obj()
+		context = {'detaliu': obj}
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return redirect('home')
+		obj = self.get_obj()
+		idf = None
+		if obj is not None:
+			idf = obj.foaie.id
+		if idf is not None:
+			obj.delete()
+			return redirect('foaie-detaliu', id=idf)
+
+		return render(request, self.template_name)
+
+

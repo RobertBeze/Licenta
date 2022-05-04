@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Ștergere{% endblock %}
+
+{% block content %}
+	<h1 style="background-color: #e78200; text-align: center;">Șterge Detaliu {{ detaliu.id }}</h1>
+	<form method='POST'> {% csrf_token %}
+		<h1>Ești sigur că vrei să ștergi detaliul din foaia de parcurs?</h1>
+		<p><input type="submit" value="DA"/> <a href="{% url 'foaie-detaliu' detaliu.foaie.id %}">NU</a></p>
+	</form>
+{% endblock %}
