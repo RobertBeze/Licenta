@@ -3,7 +3,7 @@
 {% block title %}Ștergere{% endblock %}
 
 {% block content %}
-	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Șterge vehicul {{ vehicle.vehicle_plate }}</h1>
+	<h1 style="background-color: #e78200; text-align: center;">Șterge vehicul {{ vehicle.vehicle_plate }}</h1>
 	<form method='POST'> {% csrf_token %}
 		<h1>Ești sigur că vrei să ștergi vehiculul cu numărul de înmatriculare {{ vehicle.vehicle_plate }}?</h1>
 		<p><input type="submit" value="DA"/> <a href="{{ vehicle.get_absolute_url }}">NU</a></p>

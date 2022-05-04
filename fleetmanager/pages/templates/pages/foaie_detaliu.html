@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Detalii foaie din data: {{ foaie.creation_date }}</h1>
+<h1 style="background-color: #e78200; text-align: center;">Detalii foaie din data: {{ foaie.creation_date }}</h1>
 {% if not foaie.expired %}
 <a class="btn btn-secondary" href="{% url 'foaie-detaliu-add' foaie.id %}">Adauga Detalii</a>
 {% elif request.user.is_superuser %}

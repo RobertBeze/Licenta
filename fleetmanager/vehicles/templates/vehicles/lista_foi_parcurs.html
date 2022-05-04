@@ -3,7 +3,7 @@
 {% block title %}Foi Parcurs{% endblock %}
 
 {% block content %}
-	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Foi parcurs</h1>
+	<h1 style="background-color: #e78200; text-align: center;">Foi parcurs</h1>
 	<div class="alert alert-info" role="alert">
   		Foile de parcurs procesate nu se pot extinde!
 	</div>
@@ -26,8 +26,18 @@
 			<td><a href="{% url 'foaie-detaliu' foaie.id %}">{{ foaie.id }}</a></td>
 			<td>{{ foaie.vehicle.vehicle_plate }}</td>
 			<td>{{ foaie.creation_date }}</td>
-			<td>{{ foaie.expired }}</td>
-			<td>{{ foaie.procesat }}</td>
+			<td>{% if foaie.expired %}
+				<i class="bi bi-check-circle-fill" style="color:#e78200"></i>
+				{% else %}
+				<i class="bi bi-x-circle-fill" style="color:#e78200"></i>
+			{% endif %}
+			</td>
+			<td>{% if foaie.procesat%}
+				<i class="bi bi-check-circle-fill" style="color:#e78200"></i>
+				{% else %}
+				<i class="bi bi-x-circle-fill" style="color:#e78200"></i>
+			{% endif %}
+			</td>
 			<td><a href="{% url 'foaie-parcurs-extend' foaie.id %}">Extinde</a> <a href="{% url 'foaie-parcurs-delete' foaie.id %}">Sterge</a></td>
 		</tr>
 		{% endfor %}

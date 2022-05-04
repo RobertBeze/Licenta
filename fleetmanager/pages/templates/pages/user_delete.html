@@ -3,7 +3,7 @@
 {% block title %}Ștergere{% endblock %}
 
 {% block content %}
-	<h1 style="background-color: rgb(232, 232, 232); text-align: center;">Șterge Șofer {{ user.username }}</h1>
+	<h1 style="background-color: #e78200; text-align: center;">Șterge Șofer {{ user.username }}</h1>
 	<form method='POST'> {% csrf_token %}
 		<h1>Ești sigur că vrei să ștergi utilizatorul: {{user.username }}?</h1>
 		<p><input type="submit" value="DA"/> <a href="{% url 'user-list' %}">NU</a></p>
