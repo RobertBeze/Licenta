@@ -98,6 +98,7 @@
 	var data_curenta = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
 	$("#btnitpexpirat").click(function(){
 	    var doc = new jsPDF('p', 'pt', 'a4')
+	    doc.text("RDFleet", 20, 20)
 	    doc.text("Vehicule cu ITP Expirat", 200, 20)
 	    doc.autoTable({ html: '#itp-expirat' })
 	    var finalY = doc.previousAutoTable.finalY;
@@ -107,6 +108,7 @@
 
 	$("#btnitpluna").click(function(){
 	    var doc = new jsPDF('p', 'pt', 'a4')
+	    doc.text("RDFleet", 20, 20)
 	    doc.text("Vehicule cu ITP care expira in curand", 170, 20)
 	    doc.autoTable({ html: '#itp-luna' })
 	    var finalY = doc.previousAutoTable.finalY;
@@ -116,6 +118,7 @@
 
 	$("#btnrcaexpirat").click(function(){
 	    var doc = new jsPDF('p','pt','a4')
+	    doc.text("RDFleet", 20, 20)
 	    doc.text("Vehicule cu RCA Expirat", 200, 20)
 	    doc.autoTable({ html: '#rca-expirat' })
 	    var finalY = doc.previousAutoTable.finalY;
@@ -125,6 +128,7 @@
 
 	$("#btnrcaluna").click(function(){
 	    var doc = new jsPDF('p','pt','a4')
+	    doc.text("RDFleet", 20, 20)
 	    doc.text("Vehicule cu RCA care expira in curand", 170, 20)
 	    doc.autoTable({ html: '#rca-luna' })
 	    var finalY = doc.previousAutoTable.finalY;

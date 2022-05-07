@@ -57,6 +57,12 @@
 	</table>
 	{% else %}
 	<h1 style="background-color: #e78200; text-align: center;"><a href="{% url 'vehicle-list' %}">Vă rugăm să introduceți numărul de înmatriculare căutat</a></h1>
+	<div class="input-group">
+		<form class="d-flex" method="POST" action="{% url 'search-vehicle' %}"> {% csrf_token %}
+			<input class="form-control me-2" type="search" placeholder="Caută Vehicul" name="searched">
+			<button class="btn btn-secondary" type="submit">Caută</button>
+		</form>
+	</div>
 	{% endif %}
 	{% endif %}
 {% endblock %}

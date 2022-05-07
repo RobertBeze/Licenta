@@ -7,6 +7,7 @@ from django.views import View
 from pages.models import FoaieParcurs, DetaliiFoaieParcurs
 import datetime
 from dateutil.relativedelta import relativedelta
+from dateutil import parser
 
 # Create your views here.
 
@@ -354,3 +355,47 @@ class TopKMView(View):
 			data_sorted = False
 		context = { 'data' : data_sorted}
 		return render(request,self.template_name,context)
+
+class TopKMSearchView(View):
+	template_name = 'vehicles/top_km_s.html'
+
+	def post(self, request, *args, **kwargs):
+		if not request.user.is_superuser:
+			return redirect('home')
+
+		data = {}
+
+		start_date = parser.parse(request.POST['fdata'])
+		start_date = start_date.date()
+		#start_date = datetime.date.today() - relativedelta(months=1)
+		end_date = parser.parse(request.POST['ldata'])
+		end_date = end_date.date()
+		#end_date = datetime.date.today()
+		if start_date > end_date:
+			tmp = end_date
+			end_date = start_date
+			start_date = tmp
+
+		am_ceva = False
+		lista_foi = FoaieParcurs.objects.filter(procesat=True)
+		for foaie in lista_foi:
+			if start_date <= foaie.creation_date <= end_date:
+				am_ceva = True
+				veh = foaie.vehicle
+				km = 0
+				detalii = DetaliiFoaieParcurs.objects.filter(foaie=foaie)
+				if detalii:
+					for d in detalii:
+						km = km + d.km
+					data[veh.vehicle_plate] = km
+
+		if am_ceva:
+			data_sorted = sorted(data.items(), key=lambda x: x[1], reverse=True)
+		else:
+			data_sorted = False
+		context = { 'data' : data_sorted, 'fdata': start_date, 'ldata': end_date, 'searched': True}
+		return render(request,self.template_name,context)
+
+	def get(self, request, *args, **kwargs):
+		context = {'searched': False}
+		return render(request, self.template_name, context)
