@@ -137,7 +137,8 @@ class VehicleUpdateForm(forms.ModelForm):
 
 	def clean_vehicle_driver(self,*args,**kwargs):
 		vehicle_driver = self.cleaned_data.get('vehicle_driver')
-		obj = Vehicle.objects.filter(vehicle_driver=vehicle_driver)
+		vehicle_plate = self.cleaned_data.get('vehicle_plate')
+		obj = Vehicle.objects.exclude(vehicle_plate=vehicle_plate)
 		if vehicle_driver == None:
 			return vehicle_driver
 		else:
