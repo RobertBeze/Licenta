@@ -12,6 +12,16 @@
 		<input type="submit" value="Salvează">
 	</form>
 	</div>
-{% endblock %}
 
 <!-- Js  {{ id_foaie }} => hidden input-->
+<script type="text/javascript">
+	function code(){
+		var id = JSON.parse("{{ id_foaie | escapejs }}");
+		document.getElementById('id_id_foaie').value = id;
+		console.log(id);
+		console.log(typeof id);
+	}
+	window.onload = code;
+</script>
+
+{% endblock %}

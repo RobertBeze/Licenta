@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import re
-from pages.models import DetaliiFoaieParcurs
+from pages.models import DetaliiFoaieParcurs, FoaieParcurs
 
 
 class UserForm(forms.Form):
@@ -65,7 +65,7 @@ class TimePickerInput(forms.TimeInput):
 
 
 class DetaliuFoaieForm(forms.Form):
-	#id_foaie
+	id_foaie = forms.IntegerField(label="Id Foaie Parcurs")
 	departure = forms.CharField(label='Loc. Plecare')
 	arrival = forms.CharField(label='Loc. Destinatie')
 	date_departure = forms.TimeField(label="Ora Plecare", widget=TimePickerInput)
@@ -77,6 +77,7 @@ class DetaliuFoaieForm(forms.Form):
 	date_departure.widget.attrs.update({'class':'form-control w-25'})
 	date_arrival.widget.attrs.update({'class':'form-control w-25'})
 	km.widget.attrs.update({'class':'form-control w-25'})
+	id_foaie.widget.attrs.update({'class':'form-control w-25', 'readonly' : True})
 
 	def clean_departure(self):
 		departure = self.cleaned_data.get('departure')
@@ -103,12 +104,40 @@ class DetaliuFoaieForm(forms.Form):
 			raise forms.ValidationError('Doar numere intregi')
 		return km
 
+	def clean_date_departure(self):
+		date_departure = self.cleaned_data.get('date_departure')
+		return date_departure
+
+	def clean_date_arrival(self):
+		date_arrival = self.cleaned_data.get('date_arrival')
+		return date_arrival
+
+	def clean(self):
+		cleaned_data = super().clean()
+		date_departure = cleaned_data.get('date_departure')
+		date_arrival = cleaned_data.get('date_arrival')
+		id_foaie = self.cleaned_data.get('id_foaie')
+		foaie = FoaieParcurs.objects.get(id=id_foaie)
+		detalii = DetaliiFoaieParcurs.objects.filter(foaie=foaie)
+
+		if date_departure >= date_arrival:
+			raise forms.ValidationError("Ora plecării trebuie să fie mai mică decât ora sosirii")
+
+		for d in detalii:
+			if (date_departure <= d.date_arrival) and (date_arrival >= d.date_departure):
+				raise forms.ValidationError("Intervalul orar este ocupat: {} -> {}".format(d.date_departure,d.date_arrival))
+
+
+
+
 class DetaliuUpdateForm(forms.ModelForm):
+	id_foaie = forms.IntegerField(label="Id Foaie Parcurs")
 	departure = forms.CharField(label='Loc. Plecare')
 	arrival = forms.CharField(label='Loc. Destinatie')
 	date_departure = forms.TimeField(label="Ora Plecare", widget=TimePickerInput)
 	date_arrival = forms.TimeField(label="Ora sosire", widget=TimePickerInput)
 	km =  forms.IntegerField(label="KM Parcursi")
+	id_foaie.widget.attrs.update({'class':'form-control w-25', 'readonly':True})
 
 	departure.widget.attrs.update({'class':'form-control w-25'})
 	arrival.widget.attrs.update({'class':'form-control w-25'})
@@ -150,3 +179,27 @@ class DetaliuUpdateForm(forms.ModelForm):
 		if not res:
 			raise forms.ValidationError('Doar litere, puncte si spatii sunt permise')
 		return arrival
+
+	def clean_date_departure(self):
+		date_departure = self.cleaned_data.get('date_departure')
+		return date_departure
+
+	def clean_date_arrival(self):
+		date_arrival = self.cleaned_data.get('date_arrival')
+		return date_arrival
+
+	def clean(self):
+		cleaned_data = super().clean()
+		date_departure = cleaned_data.get('date_departure')
+		date_arrival = cleaned_data.get('date_arrival')
+		id_foaie = self.cleaned_data.get('id_foaie')
+		detaliu = DetaliiFoaieParcurs.objects.get(id=id_foaie)
+		foaie = detaliu.foaie
+		detalii = DetaliiFoaieParcurs.objects.filter(foaie=foaie)
+
+		if date_departure >= date_arrival:
+			raise forms.ValidationError("Ora plecării trebuie să fie mai mică decât ora sosirii")
+
+		for d in detalii:
+			if (date_departure <= d.date_arrival) and (date_arrival >= d.date_departure):
+				raise forms.ValidationError("Intervalul orar este ocupat: {} -> {}".format(d.date_departure,d.date_arrival))

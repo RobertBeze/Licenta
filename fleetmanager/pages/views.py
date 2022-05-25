@@ -8,6 +8,7 @@ from vehicles.models import Vehicle
 import datetime
 from dateutil.relativedelta import relativedelta
 from .models import FoaieParcurs, DetaliiFoaieParcurs
+import json
 
 # Create your views here.
 class HomeView(View):
@@ -247,8 +248,10 @@ class FoaieDetaliuAddView(View):
 		if not request.user.is_authenticated:
 			return redirect('home')
 		form = DetaliuFoaieForm()
-		context = {}
-		context['form'] = form
+		context = {
+			'form' : form,
+			'id_foaie': json.dumps(self.kwargs.get('id')),
+		}
 		return render(request, self.template_name,context)
 
 	def post(self,request,*args,**kwargs):
@@ -258,7 +261,7 @@ class FoaieDetaliuAddView(View):
 
 		context = {
 			'form' : form,
-			'id_foaie': self.kwargs.get('id'),
+			'id_foaie': json.dumps(self.kwargs.get('id')),
 		}
 
 		if form.is_valid():
@@ -335,7 +338,8 @@ class DetaliiUpdateView(View):
 		form = DetaliuUpdateForm(instance = obj)
 		context = {
 			'form': form,
-			'detaliu': obj
+			'detaliu': obj,
+			'id_foaie': json.dumps(self.kwargs.get('id'))
 		}
 		return render(request, self.template_name, context)
 
@@ -351,7 +355,8 @@ class DetaliiUpdateView(View):
 
 		context = {
 			'form': form,
-			'detaliu': obj
+			'detaliu': obj,
+			'id_foaie': json.dumps(self.kwargs.get('id'))
 		}
 		return render(request, self.template_name,context)
 
