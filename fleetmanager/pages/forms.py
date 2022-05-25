@@ -65,6 +65,7 @@ class TimePickerInput(forms.TimeInput):
 
 
 class DetaliuFoaieForm(forms.Form):
+	#id_foaie
 	departure = forms.CharField(label='Loc. Plecare')
 	arrival = forms.CharField(label='Loc. Destinatie')
 	date_departure = forms.TimeField(label="Ora Plecare", widget=TimePickerInput)

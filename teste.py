@@ -28,7 +28,7 @@ def main():
     print("Test Started!")
     driver.maximize_window()
     driver.get(url)
-    login("robert", "18280814")
+    login("robert", "ceva")
     driver.close()
 
 

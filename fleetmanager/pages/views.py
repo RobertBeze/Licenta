@@ -258,6 +258,7 @@ class FoaieDetaliuAddView(View):
 
 		context = {
 			'form' : form,
+			'id_foaie': self.kwargs.get('id'),
 		}
 
 		if form.is_valid():
