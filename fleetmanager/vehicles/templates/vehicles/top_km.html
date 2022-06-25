@@ -26,6 +26,13 @@
 		</tr>{% endfor %}
 	</table>
 	{% else %}
-		<h1 style="background-color: #e78200; text-align: center;">Foaile de parcurs din ultimele 30 de zile nu sunt procesate</h1>
+		<h1 style="background-color: #e78200; text-align: center;">Foile de parcurs din ultimele 30 de zile nu sunt procesate</h1>
+		<div class="input-group">
+			<form class="d-flex" method="POST" action="{% url 'top-km-search' %}"> {% csrf_token %}
+				<input class="form-control me-2" type="date" placeholder="Data inceput" name="fdata" required>
+				<input class="form-control me-2" type="date" placeholder="Data sfarsit" name="ldata" required>
+				<button class="btn btn-secondary" type="submit">Caută</button>
+			</form>
+		</div>
 	{% endif %}
 {% endblock %}

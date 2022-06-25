@@ -314,6 +314,10 @@ class ProceseazaFoiParcurs(View):
 	def get(self, request, *args, **kwargs):
 		foi = FoaieParcurs.objects.all()
 		for f in foi:
+			if f.data_expirare < datetime.date.today():
+				f.expired = True
+				f.save()
+		for f in foi:
 			if f.expired:
 				if not f.procesat:
 					detalii = DetaliiFoaieParcurs.objects.filter(foaie=f)

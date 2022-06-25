@@ -98,12 +98,8 @@ class RDFleetTest(unittest.TestCase):
         lista = []
         for k in li:
             lista.append(k.text)
-
-        self.assertIs(len(lista), 0, "Eroare la autentificare {}".format(lista))
-
-
-        title = driver.title
-        self.assertIn(title,"Home-User Home-Admin", "Credentiale incorecte!")
+        self.assertIsNot(len(lista), 0, "Eroare la autentificare {}".format(lista))
+        print(lista)
 
     def test_add_vehicle_method1(self):
         driver = self.driver
@@ -122,13 +118,13 @@ class RDFleetTest(unittest.TestCase):
         title = driver.title
         self.assertIn(title,"Home-Admin", "Credentiale incorecte sau utilizator normal! Necesita drepturi de admin!")
 
-        driver.find_element_by_id("vehiculebtn").click()
+        driver.find_element(By.ID, "vehiculebtn").click()
         title = driver.title
         self.assertIn(title,"Listă Vehicule","Eroare! Titlul paginii este incorect")
 
-        driver.find_element_by_id("adaugavehiculbtn").click()
+        driver.find_element(By.ID,"adaugavehiculbtn").click()
         title = driver.title
-        self.assertIn(title,"Adaugă Vehicul", "Eroare! Titlul paginii trebuia să fie Aduagă Vehicul")
+        self.assertIn(title,"Adaugă Vehicul", "Eroare! Titlul paginii trebuia sa fie Aduaga Vehicul")
 
 
         plate = driver.find_element(By.ID, "id_vehicle_plate")
@@ -183,9 +179,9 @@ class RDFleetTest(unittest.TestCase):
         title = driver.title
         self.assertIn(title, "Listă Vehicule", "Eroare! Titlul paginii este incorect")
 
-        driver.find_element_by_id("adaugavehiculbtn").click()
+        driver.find_element(By.ID, "adaugavehiculbtn").click()
         title = driver.title
-        self.assertIn(title, "Adaugă Vehicul", "Eroare! Titlul paginii trebuia să fie Aduagă Vehicul")
+        self.assertIn(title, "Adaugă Vehicul", "Eroare! Titlul paginii trebuia sa fie Aduaga Vehicul")
 
         plate = driver.find_element(By.ID, "id_vehicle_plate")
         nr = "MH23RXR"
@@ -220,8 +216,7 @@ class RDFleetTest(unittest.TestCase):
             for k in items:
                 lista.append(k.text)
 
-        self.assertIs(len(lista), 0, "Erori la submiterea formularului: {}".format(lista))
-
+        self.assertIsNot(len(lista), 0, "Erori la submiterea formularului: {}".format(lista))
         print(lista)
 
 
